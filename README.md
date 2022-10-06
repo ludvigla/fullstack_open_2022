@@ -1,6 +1,15 @@
-# fullstack open 2022
+---
+title: GitHub repo for CSM141081
+author: Ludvig Larsson
+---
+
+This repository contains solutions to exercises provided in the
+[Full Stack Open 2022](https://fullstackopen.com/en/part0/general_info) 
+given at the University of Helsinki.
 
 ## Exercises
+
+### Part0
 
 - [x] __0.1: HTML__ <br/>
 _Review the basics of HTML by reading this tutorial from Mozilla: HTML tutorial._

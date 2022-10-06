@@ -25,3 +25,5 @@ See `part0/0.4_Single_Page_app_diagram.pdf`
 
 - [x] __0.6: New note__<br/>
 See `part0/0.6_New_Note_diagram.pdf`
+
+### part1

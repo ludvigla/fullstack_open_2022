@@ -1,7 +1,4 @@
----
-title: GitHub repo for CSM141081
-author: Ludvig Larsson
----
+# CSM141081 - Ludvig Larsson
 
 This repository contains solutions to exercises provided in the
 [Full Stack Open 2022](https://fullstackopen.com/en/part0/general_info) 

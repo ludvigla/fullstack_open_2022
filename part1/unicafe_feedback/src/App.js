@@ -1,7 +1,10 @@
 import { useState } from 'react'
 
 // Define Display and Button components
-const Display = ({ text, counter }) => <div>{text + " " + counter}</div>
+// I realize I must've missunderstood the previous exercises as I have already 
+// defined a Button component and a Display (StatisticLine) component. Anyways,
+// here's my solution:
+const StatisticsLine = ({ text, value }) => <div>{text + " " + value}</div>
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
 
 // Define Statistics component
@@ -13,18 +16,12 @@ const Statistics = ({ good, neutral, bad }) => {
   } else {
     return (
       <div>
-        <Display text="good" counter={good} />
-        <Display text="neutral" counter={neutral} />
-        <Display text="bad" counter={bad} />
-        <Display text="all" counter={good + neutral + bad} />
-        <Display
-          text="average"
-          counter={(good - bad) / (good + neutral + bad)}
-        />
-        <Display
-          text="positive"
-          counter={(good / (good + neutral + bad)) * 100 + "%"}
-        />
+        <StatisticsLine text="good" value={good} />
+        <StatisticsLine text="neutral" value={neutral} />
+        <StatisticsLine text="bad" value={bad} />
+        <StatisticsLine text="all" value={good + neutral + bad} />
+        <StatisticsLine text="average" value={(good - bad) / (good + neutral + bad)} />
+        <StatisticsLine text="positive" value={(good / (good + neutral + bad)) * 100 + "%"} />
       </div>
     );
   }

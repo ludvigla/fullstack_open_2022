@@ -9,10 +9,18 @@ const App = () => {
 
   const addNote = (event) => {
     event.preventDefault();
+    // prevent storing empty names
+    if (newName === '') {
+      return
+    };
     const personObject = {
       name: newName
     };
-    setPersons(persons.concat(personObject));
+    const checkperson = persons.every(person => person.name !== newName);
+    // Prevent updating phonebook if name already exists
+    checkperson ? 
+      setPersons(persons.concat(personObject)) : 
+      alert(`${newName} is already added to phonebook`);
     setNewName('');
   }
 

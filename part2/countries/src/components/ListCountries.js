@@ -15,11 +15,16 @@ const ListCountries = ({ countries }) => {
         {showCountry.map((country, index) => (
             <li key={index}>
                 {country.name.common}
-                <input key={index} type="button" value="show" onClick={() => {
-                    const copy = [...showCountry];
-                    copy[index].show = !copy[index].show;
-                    setShowCountry(copy);
-                }}/>
+                <input 
+                    key={index} 
+                    type="button" 
+                    value={showCountry[index].show ? "hide" : "show"} 
+                    onClick={() => {
+                        const copy = [...showCountry];
+                        copy[index].show = !copy[index].show;
+                        setShowCountry(copy);
+                    }}
+                />
                 {country.show ? <CountryBasics country={country} /> : null}
             </li>
         ))}

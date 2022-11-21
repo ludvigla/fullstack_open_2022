@@ -1,18 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import "./App.css";
 import Search from './components/Search';
 import AddPerson from './components/AddPerson';
 import RenderContacts from './components/RenderContacts';
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 , important: true },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 , important: true  },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 , important: true  },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 , important: true  }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        let copy = response.data;
+        copy.map(person => person.important = true);
+        setPersons(copy);
+      });
+  }, []);
  
   const addNote = (event) => {
     event.preventDefault();

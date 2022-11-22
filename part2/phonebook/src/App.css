@@ -1,7 +1,10 @@
 .no-bullets {
-    list-style-type: none; /* Remove bullets */
-    padding: 0; /* Remove padding */
-    margin: 0; /* Remove margins */
+    list-style-type: none;
+    /* Remove bullets */
+    padding: 0;
+    /* Remove padding */
+    margin: 0;
+    /* Remove margins */
 }
 
 .person-added-message {
@@ -12,4 +15,14 @@
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
-  }
+}
+
+.person-removed {
+    color: red;
+    background: lightgrey;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}

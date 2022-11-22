@@ -5,6 +5,7 @@ import Search from './components/Search';
 import AddPerson from './components/AddPerson';
 import RenderContacts from './components/RenderContacts';
 import Notification from './components/Notification';
+import Error from './components/Error';
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -12,6 +13,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ notification, setNotification ] = useState(null)
+  const [ errormessage, setErrormessage ] = useState(null)
   const [ currenttimeout, setCurrentTimeout ] = useState(null)
 
   const handleNotification = (message) => {
@@ -22,6 +24,16 @@ const App = () => {
     setCurrentTimeout(
       setTimeout(() => {
         setNotification(null);
+      }, 5000)
+    );
+  };
+
+  const handleError = (message) => {
+    setErrormessage(message)
+    clearTimeout(currenttimeout)
+    setCurrentTimeout(
+      setTimeout(() => {
+        setErrormessage(null);
       }, 5000)
     );
   };
@@ -70,6 +82,10 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.map(person => person.name !== newName ? person : returnedPerson)); 
           handleNotification(`Changed number for ${returnedPerson.name}`);
+        })
+        .catch(error => {
+          handleError(`Information of ${checkperson.name} has already been removed from server`)
+          setPersons(persons.filter(n => n.id !== checkperson.id))
         }) :  
       alert(`${newName} is already added to phonebook`);
     setNewName('');
@@ -77,7 +93,6 @@ const App = () => {
   }
 
   const deletePerson = (id) => {
-
     personService
       .remove(id)
       .then(() => {
@@ -109,6 +124,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={notification} />
+      <Error message={errormessage} />
       <Search handleSearchChange={handleSearchChange} />
       <h3>Add a new</h3>
       <AddPerson 

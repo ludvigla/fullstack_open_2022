@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import personService from './services/persons';
 import "./App.css";
 import Search from './components/Search';
 import AddPerson from './components/AddPerson';
@@ -7,20 +7,20 @@ import RenderContacts from './components/RenderContacts';
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
+  const [selectedPersons, setSelectedPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        let copy = response.data;
-        copy.map(person => person.important = true);
-        setPersons(copy);
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons);
+        setSelectedPersons(initialPersons);
       });
   }, []);
  
-  const addNote = (event) => {
+  const addPerson = (event) => {
     event.preventDefault();
     // prevent storing empty names
     if (newName === '' || newNumber === '') {
@@ -32,21 +32,30 @@ const App = () => {
       return
     }
     const personObject = {
-      id: persons.length + 1,
       name: newName,
-      number: newNumber,
-      important: true
+      number: newNumber
     };
     const checkperson = persons.every(person => person.name !== newName);
     // Prevent updating phonebook if name already exists
     checkperson ? 
-      setPersons(persons.concat(personObject)) : 
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson)); 
+        }) : 
       alert(`${newName} is already added to phonebook`);
     setNewName('');
     setNewNumber('');
   }
 
-  const handleNoteChange = (event) => {
+  // Update state variable holding the selected persons
+  // This will override the search filter when a new person 
+  // is added
+  useEffect(() => {
+    setSelectedPersons(persons);
+  }, [persons]);
+
+  const handleNameChange = (event) => {
     setNewName(event.target.value);
   };
 
@@ -55,14 +64,8 @@ const App = () => {
   };
 
   const handleSearchChange = (event) => {
-    const copy = persons.map((person) => {
-        person.name.toLowerCase().includes(event.target.value.toLowerCase())
-          ? (person.important = true)
-          : (person.important = false)
-        return person
-      }
-    );
-    setPersons(copy);
+    const filtered = persons.filter(p => p.name.toLowerCase().includes(event.target.value.toLowerCase()));
+    setSelectedPersons(filtered);
   };
 
   return (
@@ -71,14 +74,14 @@ const App = () => {
       <Search handleSearchChange={handleSearchChange} />
       <h3>Add a new</h3>
       <AddPerson 
-        addNote={addNote}
+        addPerson={addPerson}
         newName={newName}
-        handleNoteChange={handleNoteChange}
+        handleNameChange={handleNameChange}
         newNumber={newNumber}
         handleNumberChange={handleNumberChange}
       />
       <h3>Numbers</h3>
-      <RenderContacts persons={persons} />
+      <RenderContacts persons={selectedPersons} />
     </div>
   );
 }

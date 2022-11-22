@@ -1,14 +1,13 @@
 import RenderContact from "./RenderContact";
 
-const RenderContacts = ({ persons }) =>
-<>
+const RenderContacts = ({ persons }) => (
+  <>
     <ul className="no-bullets">
-        {persons.map((person) => {
-        return person.important ? (
-            <RenderContact key={person.id} person={person} />
-        ) : null;
-        })}
+      {persons.map((person) => (
+        <RenderContact key={person.id} person={person} />
+      ))}
     </ul>
-</>
+  </>
+);
 
 export default RenderContacts;

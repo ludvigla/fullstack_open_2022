@@ -69,3 +69,8 @@ See commit a48f76d
 
 - [x] __1.14: anecdotes, step3__ <br/>
 See commit 5409fe0
+
+
+### Part3
+
+See [part3 repo](https://github.com/ludvigla/fullstack_open_2022_part3)

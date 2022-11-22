@@ -1,29 +1,14 @@
 {
   "persons": [
     {
-      "name": "Neew Name",
-      "number": "02941431",
-      "id": 5
+      "name": "Ricky Gervais",
+      "number": "343143141",
+      "id": 2
     },
     {
-      "name": "New Guy",
-      "number": "98431431",
-      "id": 6
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "994324",
-      "id": 7
-    },
-    {
-      "name": "guyf",
-      "number": "874238432",
-      "id": 8
-    },
-    {
-      "name": "My new guy",
-      "number": "1331",
-      "id": 9
+      "name": "Carl Pilkington",
+      "number": "9841341",
+      "id": 3
     }
   ]
 }

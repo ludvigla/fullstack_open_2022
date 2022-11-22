@@ -4,12 +4,27 @@ import "./App.css";
 import Search from './components/Search';
 import AddPerson from './components/AddPerson';
 import RenderContacts from './components/RenderContacts';
+import Notification from './components/Notification';
 
 const App = () => {
-  const [persons, setPersons] = useState([]) 
-  const [selectedPersons, setSelectedPersons] = useState([])
-  const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber] = useState('')
+  const [ persons, setPersons ] = useState([]) 
+  const [ selectedPersons, setSelectedPersons ] = useState([])
+  const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
+  const [ notification, setNotification ] = useState(null)
+  const [ currenttimeout, setCurrentTimeout ] = useState(null)
+
+  const handleNotification = (message) => {
+    setNotification(message)
+    clearTimeout(currenttimeout)
+    // Create a new timeout to clear the notification after 5 seconds
+    // If a new contact is added, the timeout is reset
+    setCurrentTimeout(
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000)
+    );
+  };
 
   useEffect(() => {
     personService
@@ -47,12 +62,14 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson)); 
+          handleNotification(`Added ${returnedPerson.name} to phonebook`);
         }) : 
       typeof checknumber === 'undefined' ?
       personService
         .update(checkperson.id, {name: newName, number: newNumber})
         .then(returnedPerson => {
           setPersons(persons.map(person => person.name !== newName ? person : returnedPerson)); 
+          handleNotification(`Changed number for ${returnedPerson.name}`);
         }) :  
       alert(`${newName} is already added to phonebook`);
     setNewName('');
@@ -91,6 +108,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} />
       <Search handleSearchChange={handleSearchChange} />
       <h3>Add a new</h3>
       <AddPerson 

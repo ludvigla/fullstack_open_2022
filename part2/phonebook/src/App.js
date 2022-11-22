@@ -35,21 +35,32 @@ const App = () => {
       name: newName,
       number: newNumber
     };
-    const checkperson = persons.every(person => person.name !== newName);
+
+    // check if the name already exists
+    const checkperson = persons.find(person => person.name === newName);
+    // check if number already exists
+    const checknumber = persons.find(person => person.number === newNumber);
+
     // Prevent updating phonebook if name already exists
-    checkperson ? 
+    typeof checkperson === 'undefined' ? 
       personService
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson)); 
         }) : 
+      typeof checknumber === 'undefined' ?
+      personService
+        .update(checkperson.id, {name: newName, number: newNumber})
+        .then(returnedPerson => {
+          setPersons(persons.map(person => person.name !== newName ? person : returnedPerson)); 
+        }) :  
       alert(`${newName} is already added to phonebook`);
     setNewName('');
     setNewNumber('');
   }
 
   const deletePerson = (id) => {
-    
+
     personService
       .remove(id)
       .then(() => {

@@ -48,6 +48,15 @@ const App = () => {
     setNewNumber('');
   }
 
+  const deletePerson = (id) => {
+    
+    personService
+      .remove(id)
+      .then(() => {
+        setPersons(persons.filter(person => person.id !== id));
+      })
+  }
+
   // Update state variable holding the selected persons
   // This will override the search filter when a new person 
   // is added
@@ -81,7 +90,10 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h3>Numbers</h3>
-      <RenderContacts persons={selectedPersons} />
+      <RenderContacts 
+        persons={selectedPersons} 
+        deletePerson={deletePerson}
+      />
     </div>
   );
 }

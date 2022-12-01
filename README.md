@@ -134,3 +134,21 @@ See [part3 repo](https://github.com/ludvigla/fullstack_open_2022_part3)
 
 - [x] __4.1: Blog list, step1__ <br/>
 See commit 0cfa214
+
+- [x] __4.2: Blog list, step2__ <br/>
+See commit 4121d80
+
+- [x] __4.3: helper functions and unit tests, step1__ <br/>
+See commit 7cc7b59 (commit message points to the wrong exercise)
+
+- [x] __4.4: helper functions and unit tests, step2__ <br/>
+See commit 19d6110 (commit message points to the wrong exercise)
+
+- [x] __4.5*: helper functions and unit tests, step3__ <br/>
+See commit cbcceec
+
+- [x] __4.6*: helper functions and unit tests, step4__ <br/>
+See commit d180d73
+
+- [x] __4.7*: helper functions and unit tests, step5__ <br/>
+See commit 77ec508

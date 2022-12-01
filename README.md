@@ -70,6 +70,61 @@ See commit a48f76d
 - [x] __1.14: anecdotes, step3__ <br/>
 See commit 5409fe0
 
+### Part2
+
+- [x] __2.1: Course information, step6__ <br/>
+See commit b2cc7e0
+
+- [x] __2.2-2.3: Course information, step7-8__ <br/>
+See commit 264a0cd
+
+- [x] __2.4: Course information, step9__ <br/>
+See commit 85b0e63
+
+- [x] __2.5: separate module__ <br/>
+See commit 43bd74d
+
+- [x] __2.6: The Phonebook step1__ <br/>
+See commit b7400ed
+
+- [x] __2.7: The Phonebook step3__ <br/>
+See commit 4661653
+
+- [x] __2.8: The Phonebook step3__ <br/>
+See commit fd44608
+
+- [x] __2.9: The Phonebook step4__ <br/>
+See commit 1939a2d
+
+- [x] __2.10: The Phonebook step5__ <br/>
+See commit 07ab30a
+
+- [x] __2.11: The Phonebook step6__ <br/>
+See commit 803d892
+
+- [x] __2.12*: Data for countries step1__ <br/>
+See commit 5042dd2
+
+- [x] __2.13*: Data for countries step2__ <br/>
+See commit d81d6e8
+
+- [x] __2.14*: Data for countries step3__ <br/>
+See commit e9381ac
+
+- [x] __2.15-16: The Phonebook step7-8__ <br/>
+See commit 32c4c3d (commit message is incorrect...)
+
+- [x] __2.17: The Phonebook step9__ <br/>
+See commit 5cd7bd6 (commit message is incorrect...)
+
+- [x] __2.18*: The Phonebook step10__ <br/>
+See commit 97274ca (commit message is incorrect...)
+
+- [x] __2.19: The Phonebook step11__ <br/>
+See commit 55b23bc (commit message is incorrect...)
+
+- [x] __2.20*: The Phonebook step12__ <br/>
+See commit 5f226a1 (commit message is incorrect...)
 
 ### Part3
 

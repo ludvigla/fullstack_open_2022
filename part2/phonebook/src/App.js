@@ -66,28 +66,41 @@ const App = () => {
     // check if the name already exists
     const checkperson = persons.find(person => person.name === newName);
     // check if number already exists
-    const checknumber = persons.find(person => person.number === newNumber);
+    //const checknumber = persons.find(person => person.number === newNumber);
 
     // Prevent updating phonebook if name already exists
-    typeof checkperson === 'undefined' ? 
+    if (typeof checkperson === 'undefined') {
       personService
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson)); 
           handleNotification(`Added ${returnedPerson.name} to phonebook`);
-        }) : 
-      typeof checknumber === 'undefined' ?
-      personService
-        .update(checkperson.id, {name: newName, number: newNumber})
-        .then(returnedPerson => {
-          setPersons(persons.map(person => person.name !== newName ? person : returnedPerson)); 
-          handleNotification(`Changed number for ${returnedPerson.name}`);
         })
         .catch(error => {
-          handleError(`Information of ${checkperson.name} has already been removed from server`)
-          setPersons(persons.filter(n => n.id !== checkperson.id))
-        }) :  
-      alert(`${newName} is already added to phonebook`);
+          handleError(error.response.data.error);
+        }) 
+      } else {
+        // check if number already exists, otherwise update phone number
+        if (checkperson.number === newNumber) {
+          alert(`${newName} is already added to phonebook with the given number`); 
+        } else {
+          personService
+            .update(checkperson.id, {name: newName, number: newNumber})
+            .then(returnedPerson => {
+              setPersons(persons.map(person => person.name !== newName ? person : returnedPerson)); 
+              handleNotification(`Changed number for ${returnedPerson.name}`);
+            })
+            .catch(error => {
+              console.log(error)
+              if (error.response.status !== 400) {
+                handleError(`Information of ${checkperson.name} has already been removed from server`)
+                setPersons(persons.filter(n => n.id !== checkperson.id)) 
+              } else {
+                handleError(error.response.data.error)
+              }
+            })
+        }
+      }
     setNewName('');
     setNewNumber('');
   }

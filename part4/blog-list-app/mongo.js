@@ -14,19 +14,19 @@ const blogSchema = new mongoose.Schema({
   author: String,
   url: String,
   likes: Number,
-});
+})
 
 const Blog = mongoose.model('Blog', blogSchema)
 
 mongoose
   .connect(url)
-  .then((result) => {
+  .then(() => {
     console.log('connected')
 
     const blog = new Blog({
       title: 'Blog post 2',
-      author: "Jane Doe",
-      url: "https://www.example.com/blog/2",
+      author: 'Jane Doe',
+      url: 'https://www.example.com/blog/2',
       likes: 0,
     })
 

@@ -129,3 +129,8 @@ See commit 5f226a1 (commit message is incorrect...)
 ### Part3
 
 See [part3 repo](https://github.com/ludvigla/fullstack_open_2022_part3)
+
+### Part4
+
+- [x] __4.1: Blog list, step1__ <br/>
+See commit 0cfa214

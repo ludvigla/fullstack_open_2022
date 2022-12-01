@@ -39,9 +39,26 @@ const mostBlogs = (blogs) => {
     }
 }
 
+const mostLikes = (blogs) => {
+  const likesByName = lodash._(blogs)
+    .groupBy('author')
+    .map((items, name) => ({ name, totallikes: lodash._.sumBy(items, 'likes') }))
+    .value()
+  const allLikes = likesByName.map((author) => author.totallikes)
+  const mostLikes = Math.max(...allLikes)
+  const topAuthor = likesByName.find((author) => author.totallikes === mostLikes)
+  return typeof topAuthor === 'undefined'
+    ? {}
+    : {
+      author: topAuthor.name,
+      likes: topAuthor.totallikes,
+    }
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 }

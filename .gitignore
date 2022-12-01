@@ -21,4 +21,6 @@ psd
 thumb
 sketch
 
-# End of https://www.toptal.com/developers/gitignore/api/react
+part3/part3-notes-backend/.env
+part4/notes-backend/.env
+part4/blog-list-app/.env

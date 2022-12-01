@@ -55,3 +55,89 @@ describe('total likes', () => {
   })
 
 })
+
+describe('most liked blog', () => {
+
+  test('when blog list is empty', () => {
+    const result = listHelper.favoriteBlog([])
+    expect(result).toEqual({})
+  })
+
+  test('when list only has one blog post', () => {
+    const listWithOneBlog = [
+      {
+        _id: '5a422aa71b54a676234d17f8',
+        title: 'Go To Statement Considered Harmful',
+        author: 'Edsger W. Dijkstra',
+        url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+        likes: 5,
+        __v: 0,
+      },
+    ]
+
+    const result = listHelper.favoriteBlog(listWithOneBlog)
+    expect(result).toEqual({
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      likes: 5,
+    })
+  })
+
+  test('when list has multiple blog posts', () => {
+    const listWithMultipleBlogs = [
+      {
+        _id: '5a422aa71b54a676234d17f8',
+        title: 'Go To Statement Considered Harmful',
+        author: 'Edsger W. Dijkstra',
+        url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+        likes: 5,
+        __v: 0,
+      },
+      {
+        _id: '63889dbc15e275b113ecbbbf',
+        title: 'Blog Post',
+        author: 'John Doe',
+        url: 'www.example.com/post1',
+        likes: 10,
+        __v: 0,
+      }
+    ]
+
+    const result = listHelper.favoriteBlog(listWithMultipleBlogs)
+    expect(result).toEqual({
+      title: 'Blog Post',
+      author: 'John Doe',
+      likes: 10,
+    })
+  })
+
+  test('when list has multiple blog posts with ties', () => {
+    const listWithMultipleBlogs = [
+      {
+        _id: '5a422aa71b54a676234d17f8',
+        title: 'Go To Statement Considered Harmful',
+        author: 'Edsger W. Dijkstra',
+        url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+        likes: 10,
+        __v: 0,
+      },
+      {
+        _id: '63889dbc15e275b113ecbbbf',
+        title: 'Blog Post',
+        author: 'John Doe',
+        url: 'www.example.com/post1',
+        likes: 10,
+        __v: 0,
+      }
+    ]
+
+    const result = listHelper.favoriteBlog(listWithMultipleBlogs)
+    console.log(result)
+    expect(result).toEqual({
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      likes: 10,
+    })
+  })
+
+})

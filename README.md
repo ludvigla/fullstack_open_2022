@@ -173,3 +173,30 @@ See commit ae6c480
 
 - [x] __4.14: Blog list expansion, step2__ <br/>
 See commit 9fe268a
+
+- [x] __4.15: Blog list expansion, step3__ <br/>
+See commit d1b3a82
+
+- [x] __4.16*: Blog list expansion, step4__ <br/>
+See commit f55aa64
+
+- [x] __4.17: Blog list expansion, step5__ <br/>
+See commit 7c44552
+
+- [x] __4.18: Blog list expansion, step6__ <br/>
+See commit 54dfc8d
+
+- [x] __4.19: Blog list expansion, step7__ <br/>
+See commit 54dfc8d
+
+- [x] __4.20*: Blog list expansion, step8__ <br/>
+See commit e4c7a9c
+
+- [x] __4.21*: Blog list expansion, step9__ <br/>
+See commit d18b5e1
+
+- [x] __4.22*: Blog list expansion, step10__ <br/>
+See commit 4d745bb
+
+- [x] __4.23: Blog list expansion, step11__ <br/>
+See commit 8f37242

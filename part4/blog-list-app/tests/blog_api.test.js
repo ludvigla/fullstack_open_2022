@@ -97,7 +97,8 @@ describe('blog api test', () => {
   })
 
   // Test deleting a blog post
-  test('a note can be deleted', async () => {
+  // Solution to exercise 4.13, step1
+  test('a blog post can be deleted', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
 

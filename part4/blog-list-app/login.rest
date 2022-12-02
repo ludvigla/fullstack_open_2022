@@ -14,3 +14,15 @@ Content-Type: application/json
   "username": "jdoe",
   "password": "password"
 }
+
+###
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impkb2UiLCJpZCI6IjYzOGE2MzA0ZWE4ZjE2NTdjOGQxMzE4MiIsImlhdCI6MTY3MDAxMzcwMn0.hAeaZTD9T67yxBoiw5HJ4EYHiTYOEzh_Fox8a6mQ54k
+
+{
+  "title": "My latest blog post",
+  "author": "John Doe",
+  "url": "https://blogposts.com/my-latest-blog-post",
+  "likes": 11
+}

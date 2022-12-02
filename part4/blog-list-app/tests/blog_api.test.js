@@ -117,6 +117,14 @@ describe('blog api test', () => {
     expect(titles).not.toContain(blogToDelete.content)
   })
 
+  // verify that a property named id exists
+  test('verify that a property named id exists', async () => {
+    const response = await api.get('/api/blogs')
+
+    expect(response.body[0].id).toBeDefined()
+    expect(response.body[1].id).toBeDefined()
+  })
+
 })
 
 afterAll(() => {

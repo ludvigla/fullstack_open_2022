@@ -44,7 +44,7 @@ describe('blog api test', () => {
 
   // test adding a new blog post
   // solution to exercise 4.10, step3
-  test('a valid note can be added', async () => {
+  test('a valid blog post can be added', async () => {
     const newBlog = {
       title: 'Blog post 3',
       author: 'Jane Doe',
@@ -131,6 +131,34 @@ describe('blog api test', () => {
 
     const postWithNoLikes = response.body.find(blog => blog.title === 'Blog post 3')
     expect(postWithNoLikes.likes).toBe(0)
+  })
+
+  // test adding a new blog post with missing url or title
+  // solution to exercise 4.12*, step5
+  test('an invalid blog post is rejected', async () => {
+    const newBlogMissingTitle = {
+      author: 'Jane Doe',
+      url: 'https://www.example.com/blog/4',
+      likes: 42,
+    }
+    const newBlogMissingURL = {
+      author: 'Jane Doe',
+      url: 'https://www.example.com/blog/4',
+      likes: 42,
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlogMissingTitle)
+      .expect(400)
+
+    await api
+      .post('/api/blogs')
+      .send(newBlogMissingURL)
+      .expect(400)
+
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
 })

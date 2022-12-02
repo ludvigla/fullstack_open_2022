@@ -122,6 +122,15 @@ describe('blog api test', () => {
 
     expect(response.body[0].id).toBeDefined()
     expect(response.body[1].id).toBeDefined()
+    expect(response.body[2].id).toBeDefined()
+  })
+
+  // Test that the likes property has a default value of 0
+  test('verify 0 likes', async () => {
+    const response = await api.get('/api/blogs')
+
+    const postWithNoLikes = response.body.find(blog => blog.title === 'Blog post 3')
+    expect(postWithNoLikes.likes).toBe(0)
   })
 
 })

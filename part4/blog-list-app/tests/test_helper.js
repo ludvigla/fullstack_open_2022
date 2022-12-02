@@ -5,16 +5,19 @@ const initialBlogs = [
     title: 'Blog post 1',
     author: 'John Doe',
     url: 'https://www.example.com/blog/1',
-    likes: 0,
-    id: '63889dbc15e275b113ecbbbf',
+    likes: 10,
   },
   {
     title: 'Blog post 2',
     author: 'Jane Doe',
     url: 'https://www.example.com/blog/2',
-    likes: 0,
-    id: '6388a1e8ad309991e3205f7c',
+    likes: 15,
   },
+  {
+    title: 'Blog post 3',
+    author: 'Jane Doe',
+    url: 'https://www.example.com/blog/3',
+  }
 ]
 
 const nonExistingId = async () => {

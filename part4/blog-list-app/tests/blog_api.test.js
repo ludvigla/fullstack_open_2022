@@ -43,6 +43,7 @@ describe('blog api test', () => {
   })
 
   // test adding a new blog post
+  // solution to exercise 4.10, step3
   test('a valid note can be added', async () => {
     const newBlog = {
       title: 'Blog post 3',
@@ -62,9 +63,7 @@ describe('blog api test', () => {
     const titles = response.body.map(r => r.title)
 
     expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
-    expect(titles).toContain(
-      'Blog post 3'
-    )
+    expect(titles).toContain('Blog post 3')
   })
 
   // Test adding an empty blog post

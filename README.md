@@ -167,3 +167,9 @@ See commit 4550f5f (commit message points to the wrong exercise)
 
 - [x] __4.12*: Blog list tests, step5__ <br/>
 See commit f63b5f0 (commit message points to the wrong exercise)
+
+- [x] __4.13: Blog list expansions, step1__ <br/>
+See commit ae6c480
+
+- [x] __4.14: Blog list expansion, step2__ <br/>
+See commit 9fe268a

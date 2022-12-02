@@ -152,3 +152,18 @@ See commit d180d73
 
 - [x] __4.7*: helper functions and unit tests, step5__ <br/>
 See commit 77ec508
+
+- [x] __4.8: Blog list tests, step1__ <br/>
+See commit 51ca0bc (commit message points to the wrong exercise)
+
+- [x] __4.9*: Blog list tests, step2__ <br/>
+See commit 20c1105 (commit message points to the wrong exercise)
+
+- [x] __4.10: Blog list tests, step3__ <br/>
+See commit c7e809e (commit message points to the wrong exercise)
+
+- [x] __4.11: Blog list tests, step4__ <br/>
+See commit 4550f5f (commit message points to the wrong exercise)
+
+- [x] __4.12*: Blog list tests, step5__ <br/>
+See commit f63b5f0 (commit message points to the wrong exercise)

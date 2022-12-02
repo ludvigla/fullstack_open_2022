@@ -7,6 +7,7 @@ const api = supertest(app)
 
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const { application } = require('express')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -189,7 +190,7 @@ describe('blog api test', () => {
 })
 
 // Users API tests
-describe('when there is initially one user in db', () => {
+describe('users api tests', () => {
   beforeEach(async () => {
     await User.deleteMany({})
 
@@ -219,6 +220,47 @@ describe('when there is initially one user in db', () => {
 
     const usernames = usersAtEnd.map(u => u.username)
     expect(usernames).toContain(newUser.username)
+  })
+
+  test('invalid users are not permitted', async () => {
+
+    const usersAtStart = await helper.usersInDb()
+
+    // Test invalid username
+    const invalidUser1 = {
+      username: 'Al',
+      password: '12345678'
+    }
+
+    await api
+      .post('/api/users')
+      .send(invalidUser1)
+      .expect(400)
+
+    // Test invalid password
+    const invalidUser2 = {
+      username: 'John Doe',
+      password: '12'
+    }
+
+    await api
+      .post('/api/users')
+      .send(invalidUser2)
+      .expect(400)
+
+    // Test non-unique username
+    const invalidUser3 = {
+      username: 'root',
+      password: '12345678'
+    }
+
+    await api
+      .post('/api/users')
+      .send(invalidUser3)
+      .expect(400)
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
 })
 

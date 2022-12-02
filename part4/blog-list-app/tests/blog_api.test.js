@@ -7,7 +7,6 @@ const api = supertest(app)
 
 const Blog = require('../models/blog')
 const User = require('../models/user')
-const { application } = require('express')
 
 beforeEach(async () => {
   await Blog.deleteMany({})

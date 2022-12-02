@@ -17,173 +17,235 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-describe('blog api test', () => {
+describe('blog api tests', () => {
 
-  // Check format of returned blogs
-  test('blogs are returned as json', async () => {
-    await api
-      .get('/api/blogs')
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
+  describe('fetching blog posts', () => {
+    // Check format of returned blogs
+    test('blogs are returned as json', async () => {
+      await api
+        .get('/api/blogs')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+    })
+
+    // Check that all blogs are returned
+    test('all blogs are returned', async () => {
+      const response = await api.get('/api/blogs')
+
+      expect(response.body).toHaveLength(helper.initialBlogs.length)
+    })
+
+    // Check that a specific blog is within the returned blogs
+    test('a specific blog is within the returned blogs', async () => {
+      const response = await api.get('/api/blogs')
+
+      const titles = response.body.map((r) => r.title)
+      expect(titles).toContain('Blog post 1')
+    })
   })
 
-  // Check that all blogs are returned
-  test('all blogs are returned', async () => {
-    const response = await api.get('/api/blogs')
+  describe('posting blog posts', () => {
+    // test adding a new blog post
+    // solution to exercise 4.10, step3
+    test('a valid blog post can be added', async () => {
+      const newBlog = {
+        title: 'Blog post 3',
+        author: 'Jane Doe',
+        url: 'https://www.example.com/blog/3',
+        likes: 100,
+      }
 
-    expect(response.body).toHaveLength(helper.initialBlogs.length)
+      const initialresponse = await api
+        .post('/api/login')
+        .send({
+          username: 'root',
+          password: 'sekret'
+        })
+        .expect(200)
+      const token = initialresponse.body.token
+
+      await api
+        .post('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+      const response = await api.get('/api/blogs')
+
+      const titles = response.body.map((r) => r.title)
+
+      expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
+      expect(titles).toContain('Blog post 3')
+    })
+
+    // a blog post without a token is rejected
+    test('a blog post without a token is rejected', async () => {
+      const newBlog = {
+        title: 'Blog post 3',
+        author: 'Jane Doe',
+        url: 'https://www.example.com/blog/3',
+        likes: 100,
+      }
+
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(401)
+
+      const response = await api.get('/api/blogs')
+      expect(response.body).toHaveLength(helper.initialBlogs.length)
+    })
+
+    // Test adding an empty blog post
+    test('blog without title, author, url or likes is not added', async () => {
+      const newBlog = {}
+
+      const initialresponse = await api
+        .post('/api/login')
+        .send({
+          username: 'root',
+          password: 'sekret'
+        })
+        .expect(200)
+      const token = initialresponse.body.token
+
+      await api
+        .post('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
+        .send(newBlog)
+        .expect(400)
+
+      const response = await api.get('/api/blogs')
+
+      expect(response.body).toHaveLength(helper.initialBlogs.length)
+    })
   })
 
-  // Check that a specific blog is within the returned blogs
-  test('a specific blog is within the returned blogs', async () => {
-    const response = await api.get('/api/blogs')
+  describe('other blog post tests', () => {
+    // Test viewing a specific blog post
+    test('a specific blog can be viewed', async () => {
+      const blogsAtStart = await helper.blogsInDb()
 
-    const titles = response.body.map(r => r.title)
-    expect(titles).toContain(
-      'Blog post 1'
-    )
-  })
+      const blogToView = blogsAtStart[0]
 
-  // test adding a new blog post
-  // solution to exercise 4.10, step3
-  test('a valid blog post can be added', async () => {
-    const newBlog = {
-      title: 'Blog post 3',
-      author: 'Jane Doe',
-      url: 'https://www.example.com/blog/3',
-      likes: 100,
-    }
+      const resultBlog = await api
+        .get(`/api/blogs/${blogToView.id}`)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
 
-    await api
-      .post('/api/blogs')
-      .send(newBlog)
-      .expect(201)
-      .expect('Content-Type', /application\/json/)
+      const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
 
-    const response = await api.get('/api/blogs')
+      expect(resultBlog.body).toEqual(processedBlogToView)
+    })
 
-    const titles = response.body.map(r => r.title)
+    // Test deleting a blog post
+    // Solution to exercise 4.13, step1
+    test('a blog post can be deleted', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToDelete = blogsAtStart[0]
 
-    expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
-    expect(titles).toContain('Blog post 3')
-  })
+      const initialresponse = await api
+        .post('/api/login')
+        .send({
+          username: 'root',
+          password: 'sekret'
+        })
+        .expect(200)
+      const token = initialresponse.body.token
 
-  // Test adding an empty blog post
-  test('blog without title, author, url or likes is not added', async () => {
-    const newBlog = {}
+      await api
+        .delete(`/api/blogs/${blogToDelete.id}`)
+        .set('Authorization', `bearer ${token}`)
+        .expect(204)
 
-    await api
-      .post('/api/blogs')
-      .send(newBlog)
-      .expect(400)
+      const blogsAtEnd = await helper.blogsInDb()
 
-    const response = await api.get('/api/blogs')
+      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
 
-    expect(response.body).toHaveLength(helper.initialBlogs.length)
-  })
+      const titles = blogsAtEnd.map((r) => r.title)
 
-  // Test viewing a specific blog post
-  test('a specific blog can be viewed', async () => {
-    const blogsAtStart = await helper.blogsInDb()
+      expect(titles).not.toContain(blogToDelete.content)
+    })
 
-    const blogToView = blogsAtStart[0]
+    // verify that a property named id exists
+    test('verify that a property named id exists', async () => {
+      const response = await api.get('/api/blogs')
 
-    const resultBlog = await api
-      .get(`/api/blogs/${blogToView.id}`)
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
+      expect(response.body[0].id).toBeDefined()
+      expect(response.body[1].id).toBeDefined()
+      expect(response.body[2].id).toBeDefined()
+    })
 
-    const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
+    // Test that the likes property has a default value of 0
+    test('verify 0 likes', async () => {
+      const response = await api.get('/api/blogs')
 
-    expect(resultBlog.body).toEqual(processedBlogToView)
-  })
+      const postWithNoLikes = response.body.find(
+        (blog) => blog.title === 'Blog post 3'
+      )
+      expect(postWithNoLikes.likes).toBe(0)
+    })
 
-  // Test deleting a blog post
-  // Solution to exercise 4.13, step1
-  test('a blog post can be deleted', async () => {
-    const blogsAtStart = await helper.blogsInDb()
-    const blogToDelete = blogsAtStart[0]
+    // test adding a new blog post with missing url or title
+    // solution to exercise 4.12*, step5
+    test('an invalid blog post is rejected', async () => {
+      const newBlogMissingTitle = {
+        author: 'Jane Doe',
+        url: 'https://www.example.com/blog/4',
+        likes: 42,
+      }
+      const newBlogMissingURL = {
+        author: 'Jane Doe',
+        url: 'https://www.example.com/blog/4',
+        likes: 42,
+      }
 
-    await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
-      .expect(204)
+      const initialresponse = await api
+        .post('/api/login')
+        .send({
+          username: 'root',
+          password: 'sekret'
+        })
+        .expect(200)
+      const token = initialresponse.body.token
 
-    const blogsAtEnd = await helper.blogsInDb()
+      await api
+        .post('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
+        .send(newBlogMissingTitle)
+        .expect(400)
 
-    expect(blogsAtEnd).toHaveLength(
-      helper.initialBlogs.length - 1
-    )
+      await api
+        .post('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
+        .send(newBlogMissingURL)
+        .expect(400)
 
-    const titles = blogsAtEnd.map((r) => r.title)
+      const response = await api.get('/api/blogs')
+      expect(response.body).toHaveLength(helper.initialBlogs.length)
+    })
 
-    expect(titles).not.toContain(blogToDelete.content)
-  })
+    // Test updating a blog post
+    test('a blog post can be updated', async () => {
+      const initresponse = await api.get('/api/blogs')
+      const blogsAtStart = initresponse.body
 
-  // verify that a property named id exists
-  test('verify that a property named id exists', async () => {
-    const response = await api.get('/api/blogs')
+      const updatedPost = {
+        title: blogsAtStart[0].title,
+        author: blogsAtStart[0].author,
+        url: blogsAtStart[0].url,
+        likes: 20,
+      }
 
-    expect(response.body[0].id).toBeDefined()
-    expect(response.body[1].id).toBeDefined()
-    expect(response.body[2].id).toBeDefined()
-  })
+      await api
+        .put(`/api/blogs/${blogsAtStart[0].id}`)
+        .send(updatedPost)
+        .expect(200)
 
-  // Test that the likes property has a default value of 0
-  test('verify 0 likes', async () => {
-    const response = await api.get('/api/blogs')
-
-    const postWithNoLikes = response.body.find(blog => blog.title === 'Blog post 3')
-    expect(postWithNoLikes.likes).toBe(0)
-  })
-
-  // test adding a new blog post with missing url or title
-  // solution to exercise 4.12*, step5
-  test('an invalid blog post is rejected', async () => {
-    const newBlogMissingTitle = {
-      author: 'Jane Doe',
-      url: 'https://www.example.com/blog/4',
-      likes: 42,
-    }
-    const newBlogMissingURL = {
-      author: 'Jane Doe',
-      url: 'https://www.example.com/blog/4',
-      likes: 42,
-    }
-
-    await api
-      .post('/api/blogs')
-      .send(newBlogMissingTitle)
-      .expect(400)
-
-    await api
-      .post('/api/blogs')
-      .send(newBlogMissingURL)
-      .expect(400)
-
-    const response = await api.get('/api/blogs')
-    expect(response.body).toHaveLength(helper.initialBlogs.length)
-  })
-
-  // Test updating a blog post
-  test('a blog post can be updated', async () => {
-
-    const initresponse = await api.get('/api/blogs')
-    const blogsAtStart = initresponse.body
-
-    const updatedPost = {
-      title: blogsAtStart[0].title,
-      author: blogsAtStart[0].author,
-      url: blogsAtStart[0].url,
-      likes: 20,
-    }
-
-    await api
-      .put(`/api/blogs/${blogsAtStart[0].id}`)
-      .send(updatedPost)
-      .expect(200)
-
-    const response = await api.get('/api/blogs')
-    expect(response.body).toHaveLength(helper.initialBlogs.length)
+      const response = await api.get('/api/blogs')
+      expect(response.body).toHaveLength(helper.initialBlogs.length)
+    })
   })
 
 })

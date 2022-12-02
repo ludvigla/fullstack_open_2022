@@ -132,7 +132,6 @@ describe('most liked blog', () => {
     ]
 
     const result = listHelper.favoriteBlog(listWithMultipleBlogs)
-    console.log(result)
     expect(result).toEqual({
       title: 'Go To Statement Considered Harmful',
       author: 'Edsger W. Dijkstra',

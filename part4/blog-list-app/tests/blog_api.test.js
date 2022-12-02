@@ -162,6 +162,28 @@ describe('blog api test', () => {
     expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
+  // Test updating a blog post
+  test('a blog post can be updated', async () => {
+
+    const initresponse = await api.get('/api/blogs')
+    const blogsAtStart = initresponse.body
+
+    const updatedPost = {
+      title: blogsAtStart[0].title,
+      author: blogsAtStart[0].author,
+      url: blogsAtStart[0].url,
+      likes: 20,
+    }
+
+    await api
+      .put(`/api/blogs/${blogsAtStart[0].id}`)
+      .send(updatedPost)
+      .expect(200)
+
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(helper.initialBlogs.length)
+  })
+
 })
 
 afterAll(() => {

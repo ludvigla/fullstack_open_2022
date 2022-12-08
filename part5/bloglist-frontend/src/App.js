@@ -6,7 +6,11 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  //const [newBlog, setNewBlog] = useState('')
+  const [newBlog, setNewBlog] = useState({
+    title: '',
+    author: '',
+    url: ''
+  })
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -50,11 +54,11 @@ const App = () => {
     }
   }
 
-  /* const addBlog = (event) => {
+  const addBlog = (event) => {
     event.preventDefault()
     const blogObject = {
-      title: newBlog.blog,
-      author: user.username,
+      title: newBlog.title,
+      author: newBlog.author,
       url: newBlog.url,
       likes: 0
     }
@@ -63,14 +67,59 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setNewBlog('')
+        setNewBlog({
+          title: '',
+          author: '',
+          url: ''
+        })
       })
-  } */
+  }
 
   const handleLogout = (event) => {
     window.localStorage.clear()
     setUser(null)
   }
+
+  const handleBlogChange = (event) => {
+    const value = event.target.value
+    setNewBlog({
+      ...newBlog,
+      [event.target.name]: value
+    })
+  }
+
+  const blogForm = () => (
+    <form onSubmit={addBlog}>
+      <div>
+        title:
+        <input
+          type="text"
+          name="title"
+          value={newBlog.title}
+          onChange={handleBlogChange}
+        />
+      </div>
+      <div>
+        author:
+        <input
+          type="text"
+          name="author"
+          value={newBlog.author}
+          onChange={handleBlogChange}
+        />
+      </div>
+      <div>
+        url:
+        <input
+          type="text"
+          name="url"
+          value={newBlog.url}
+          onChange={handleBlogChange}
+        />
+      </div>
+      <button type="submit">create</button>
+    </form>
+  )
 
   return (
     <div>
@@ -104,6 +153,9 @@ const App = () => {
         <div>
           <h2>blogs</h2>
           <p>{user.name} logged in<button onClick={handleLogout}>logout</button></p>
+
+          <h2>create new</h2>
+          {blogForm()}
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}

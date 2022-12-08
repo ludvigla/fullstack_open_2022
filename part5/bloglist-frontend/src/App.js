@@ -6,6 +6,7 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
+  //const [newBlog, setNewBlog] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -18,7 +19,7 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
@@ -48,6 +49,23 @@ const App = () => {
       }, 5000)
     }
   }
+
+  /* const addBlog = (event) => {
+    event.preventDefault()
+    const blogObject = {
+      title: newBlog.blog,
+      author: user.username,
+      url: newBlog.url,
+      likes: 0
+    }
+
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        setNewBlog('')
+      })
+  } */
 
   const handleLogout = (event) => {
     window.localStorage.clear()
@@ -85,11 +103,10 @@ const App = () => {
       ) : (
         <div>
           <h2>blogs</h2>
-          <p>{user.name} logged in</p>
+          <p>{user.name} logged in<button onClick={handleLogout}>logout</button></p>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
-          <button onClick={handleLogout}>logout</button>
         </div>
       )}
     </div>
@@ -97,3 +114,4 @@ const App = () => {
 }
 
 export default App
+

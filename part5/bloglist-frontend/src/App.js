@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import Success from './components/Success'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -12,6 +13,7 @@ const App = () => {
     url: ''
   })
   const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -47,7 +49,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setErrorMessage('Wrong user name or password')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -65,14 +67,25 @@ const App = () => {
 
     blogService
       .create(blogObject)
-      .then(returnedBlog => {
+      .then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog))
         setNewBlog({
           title: '',
           author: '',
-          url: ''
+          url: '',
         })
+        setSuccessMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
       })
+      .catch((error) => {
+        setErrorMessage('invalid title, author or url')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
+
   }
 
   const handleLogout = (event) => {
@@ -152,6 +165,8 @@ const App = () => {
       ) : (
         <div>
           <h2>blogs</h2>
+          <Notification message={errorMessage} />
+          <Success message={successMessage} />
           <p>{user.name} logged in<button onClick={handleLogout}>logout</button></p>
 
           <h2>create new</h2>

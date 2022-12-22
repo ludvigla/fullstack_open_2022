@@ -106,9 +106,9 @@ const App = () => {
           <Success message={successMessage} />
           <p>{user.name} logged in<button onClick={handleLogout}>logout</button></p>
 
-          <h2>create new</h2>
+          <h2>create new blog</h2>
           <Togglable 
-            buttonLabel="new blog"
+            buttonLabel="create new blog"
             ref={blogFormRef}
           >
             <BlogForm createBlog={createBlog} />

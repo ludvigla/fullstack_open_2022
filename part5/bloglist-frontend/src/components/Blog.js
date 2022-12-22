@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, addLike }) => {
   const [visibleinfo, setVisibleInfo] = useState(false)
 
   const blogStyle = {
@@ -11,6 +11,12 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
+  const pStyle = { margin: "0px" }
+
+  const handleLikeChange = (event) => {
+    addLike(blog.id)
+  }
+
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author}
@@ -19,11 +25,11 @@ const Blog = ({ blog }) => {
       </button>
       {visibleinfo ? (
         <div>
-          <p style={{ margin: "0px" }}>{blog.url}</p>
-          <p style={{ margin: "0px" }}>
-            likes {blog.likes} <button>like</button>
+          <p style={pStyle}>{blog.url}</p>
+          <p style={pStyle}>
+            likes {blog.likes} <button onClick={handleLikeChange}>like</button>
           </p>
-          <p style={{ margin: "0px" }}>{blog.author}</p>
+          <p style={pStyle}>{blog.author}</p>
         </div>
       ) : null}
     </div>

@@ -111,6 +111,28 @@ const App = () => {
       })
   }
 
+  // Function to remove blog posts
+  const removeBlog = (id) => {
+    const blog = blogs.find((n) => n.id === id)
+
+    // Confirm if user wants to remove the blog post
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      blogService
+        .remove(id)
+        .then(() => {
+          setBlogs(blogs.filter((blog) => blog.id !== id))
+        })
+        .catch((error) => {
+          setErrorMessage(
+            `Couldn't find '${blog.title}'. The blog post has been removed.`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
+    }
+  }
+
   return (
     <div>
       {user === null ? (
@@ -137,7 +159,12 @@ const App = () => {
             <BlogForm createBlog={createBlog}/>
           </Togglable>
           {blogs.sort(function(a, b) {return b.likes - a.likes}).map((blog) => (
-            <Blog key={blog.id} blog={blog} addLike={addLike}/>
+            <Blog 
+              key={blog.id} 
+              blog={blog} 
+              addLike={addLike}
+              removeBlog={removeBlog}
+            />
           ))}
         </div>
       )}

@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Success from './components/Success'
+import LoginForm from './components/LoginForm'
+import Togglable from './components/Togglable'
+import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -17,6 +20,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -74,6 +78,7 @@ const App = () => {
           author: '',
           url: '',
         })
+        setVisible(!visible)
         setSuccessMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
         setTimeout(() => {
           setSuccessMessage(null)
@@ -101,67 +106,21 @@ const App = () => {
     })
   }
 
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <div>
-        title:
-        <input
-          type="text"
-          name="title"
-          value={newBlog.title}
-          onChange={handleBlogChange}
-        />
-      </div>
-      <div>
-        author:
-        <input
-          type="text"
-          name="author"
-          value={newBlog.author}
-          onChange={handleBlogChange}
-        />
-      </div>
-      <div>
-        url:
-        <input
-          type="text"
-          name="url"
-          value={newBlog.url}
-          onChange={handleBlogChange}
-        />
-      </div>
-      <button type="submit">create</button>
-    </form>
-  )
+  const toggleVisibility = () => {
+    setVisible(!visible)
+  }
 
   return (
     <div>
       {user === null ? (
-        <div>
-          <h2>log in to application</h2>
-          <Notification message={errorMessage} />
-          <form onSubmit={handleLogin}>
-            <div>
-              username
-              <input
-                type="text"
-                value={username}
-                name="Username"
-                onChange={({ target }) => setUsername(target.value)}
-              />
-            </div>
-            <div>
-              password
-              <input
-                type="password"
-                value={password}
-                name="Password"
-                onChange={({ target }) => setPassword(target.value)}
-              />
-            </div>
-            <button type="submit">login</button>
-          </form>
-        </div>
+        <LoginForm
+          username={username}
+          password={password}
+          handleSubmit={handleLogin}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          errorMessage={errorMessage}
+        />
       ) : (
         <div>
           <h2>blogs</h2>
@@ -170,7 +129,17 @@ const App = () => {
           <p>{user.name} logged in<button onClick={handleLogout}>logout</button></p>
 
           <h2>create new</h2>
-          {blogForm()}
+          <Togglable 
+            buttonLabel="new blog"
+            visible={visible}
+            toggleVisibility={toggleVisibility}
+          >
+            <BlogForm
+              addBlog={addBlog}
+              newBlog={newBlog}
+              handleBlogChange={handleBlogChange}
+            />
+          </Togglable>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}

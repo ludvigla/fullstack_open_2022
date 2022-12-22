@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Success from './components/Success'
@@ -20,7 +20,9 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [visible, setVisible] = useState(false)
+  //const [visible, setVisible] = useState(false)
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -68,6 +70,7 @@ const App = () => {
       url: newBlog.url,
       likes: 0
     }
+    blogFormRef.current.toggleVisibility()
 
     blogService
       .create(blogObject)
@@ -78,7 +81,6 @@ const App = () => {
           author: '',
           url: '',
         })
-        setVisible(!visible)
         setSuccessMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
         setTimeout(() => {
           setSuccessMessage(null)
@@ -98,6 +100,12 @@ const App = () => {
     setUser(null)
   }
 
+ /*  const blogForm = () => (
+    <Togglable buttonLabel='new blog' ref={blogFormRef}>
+      <BlogForm addBlog={addBlog}/>
+    </Togglable>
+  ) */
+
   const handleBlogChange = (event) => {
     const value = event.target.value
     setNewBlog({
@@ -106,9 +114,9 @@ const App = () => {
     })
   }
 
-  const toggleVisibility = () => {
+  /* const toggleVisibility = () => {
     setVisible(!visible)
-  }
+  } */
 
   return (
     <div>
@@ -131,8 +139,7 @@ const App = () => {
           <h2>create new</h2>
           <Togglable 
             buttonLabel="new blog"
-            visible={visible}
-            toggleVisibility={toggleVisibility}
+            ref={blogFormRef}
           >
             <BlogForm
               addBlog={addBlog}

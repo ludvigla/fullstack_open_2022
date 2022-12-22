@@ -93,7 +93,7 @@ const App = () => {
 
     const blog = blogs.find((n) => n.id === id)
 
-    // Increment likes by 1
+    // Increment likes by 1 to the new object
     const changedBlog = { ...blog, likes: blog.likes + 1 }
 
     blogService
@@ -136,7 +136,7 @@ const App = () => {
           >
             <BlogForm createBlog={createBlog}/>
           </Togglable>
-          {blogs.map((blog) => (
+          {blogs.sort(function(a, b) {return b.likes - a.likes}).map((blog) => (
             <Blog key={blog.id} blog={blog} addLike={addLike}/>
           ))}
         </div>

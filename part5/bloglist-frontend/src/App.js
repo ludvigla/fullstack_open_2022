@@ -40,7 +40,6 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
-
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       ) 
@@ -58,6 +57,7 @@ const App = () => {
 
   const createBlog = (newBlog) => {
     const blogObject = {
+      user: user.id,
       title: newBlog.title,
       author: newBlog.author,
       url: newBlog.url,

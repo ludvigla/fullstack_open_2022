@@ -5,7 +5,7 @@ const BlogForm = ({ createBlog }) => {
   const [newBlog, setNewBlog] = useState({
     title: '',
     author: '',
-    url: '',
+    url: ''
   })
 
   const handleBlogChange = (event) => {

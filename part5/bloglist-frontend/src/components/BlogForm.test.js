@@ -9,16 +9,7 @@ describe('<BlogForm />', () => {
 
     // Mock handler for createBlog
     const createBlog = jest.fn()
-    const { container } = render(<BlogForm createBlog={createBlog} />)
-    const blog = {
-      title: 'My first blog post',
-      author: 'Jane Doe',
-      user: '63a58e20ba69481de60d6dc6',
-    }
-
-    // Create a new blog post
-    /* const createBlogButton = screen.getByText('create new blog')
-    await userEvent.click(createBlogButton) */
+    render(<BlogForm createBlog={createBlog} />)
 
     // Fill in the form
     const title = screen.getByLabelText('title:')

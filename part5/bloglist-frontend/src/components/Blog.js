@@ -27,14 +27,14 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
   return (
     <div style={blogStyle} className='blog'>
       {blog.title} {blog.author}
-      <button id='view-button' onClick={() => setVisibleInfo(!visibleinfo)}>
+      <button id='view-button' className='viewbutton' onClick={() => setVisibleInfo(!visibleinfo)}>
         {visibleinfo ? 'hide' : 'view'}
       </button>
       {visibleinfo ? (
         <div className='extendedInfo'>
           <p style={pStyle}>{blog.url}</p>
           <p style={pStyle}>
-            likes {blog.likes} <button id='like-button' onClick={handleLikeChange}>like</button>
+            likes {blog.likes} <button id='like-button' className='likebutton' onClick={handleLikeChange}>like</button>
           </p>
           <p style={pStyle}>{blog.author}</p>
           {user.user === blogUserId ? (

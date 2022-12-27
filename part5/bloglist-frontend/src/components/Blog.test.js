@@ -52,4 +52,28 @@ describe('<Blog />', () => {
     screen.getByText('https://example.com')
   })
 
+  test('clicking the like button twice calls event handler twice', async () => {
+    const blog = {
+      title: 'Blog post',
+      author: 'John Doe',
+      url: 'https://example.com',
+      likes: 0,
+      user: '63a58e20ba69481de60d6dc6',
+    }
+
+    const mockHandler = jest.fn()
+
+    render(<Blog blog={blog} user={{}} prop={jest.fn()} removeBlog={jest.fn()} addLike={mockHandler}/>)
+
+    const user = userEvent.setup()
+    const button = screen.getByText('view')
+    // Open extended info
+    await user.click(button)
+    const likeButton = screen.getByText('like')
+    // Click on like button twice
+    await user.click(likeButton)
+    await user.click(likeButton)
+    expect(mockHandler.mock.calls).toHaveLength(2)
+  })
+
 })

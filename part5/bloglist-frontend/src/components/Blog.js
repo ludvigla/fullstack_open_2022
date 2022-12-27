@@ -39,7 +39,7 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
           <p style={pStyle}>{blog.author}</p>
           {user.user === blogUserId ? (
             <div>
-              <button onClick={handleRemove}>remove</button>
+              <button id='remove-button' onClick={handleRemove}>remove</button>
             </div>
           ) : null}
         </div>

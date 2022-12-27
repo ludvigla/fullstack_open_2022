@@ -1,18 +1,17 @@
 import { useState } from 'react'
 
 const BlogForm = ({ createBlog }) => {
-
   const [newBlog, setNewBlog] = useState({
     title: '',
     author: '',
-    url: ''
+    url: '',
   })
 
   const handleBlogChange = (event) => {
     const value = event.target.value
     setNewBlog({
       ...newBlog,
-      [event.target.name]: value
+      [event.target.name]: value,
     })
   }
 
@@ -20,9 +19,9 @@ const BlogForm = ({ createBlog }) => {
     event.preventDefault()
     createBlog(newBlog)
     setNewBlog({
-        title: '',
-        author: '',
-        url: ''
+      title: '',
+      author: '',
+      url: '',
     })
   }
 

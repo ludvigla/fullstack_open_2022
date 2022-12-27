@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, addLike, removeBlog, user }) => {
   const [visibleinfo, setVisibleInfo] = useState(false)
-  
+
   const blogUserId = blog.user.id ? blog.user.id : blog.user
 
   const blogStyle = {
@@ -10,16 +11,16 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5
+    marginBottom: 5,
   }
 
-  const pStyle = { margin: "0px" }
+  const pStyle = { margin: '0px' }
 
-  const handleLikeChange = (event) => {
+  const handleLikeChange = () => {
     addLike(blog.id)
   }
 
-  const handleRemove = (event) => {
+  const handleRemove = () => {
     removeBlog(blog.id)
   }
 
@@ -36,7 +37,7 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
             likes {blog.likes} <button onClick={handleLikeChange}>like</button>
           </p>
           <p style={pStyle}>{blog.author}</p>
-          {user.user ===blogUserId ? (
+          {user.user === blogUserId ? (
             <div>
               <button onClick={handleRemove}>remove</button>
             </div>
@@ -45,6 +46,14 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
       ) : null}
     </div>
   )
+}
+
+// 5.11: Blog list frontend, step11
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  addLike: PropTypes.func.isRequired,
+  removeBlog: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
 }
 
 export default Blog

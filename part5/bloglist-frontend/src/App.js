@@ -19,9 +19,7 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
 
   useEffect(() => {
@@ -35,14 +33,13 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
-        username, password,
+        username,
+        password,
       })
-      window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -61,7 +58,7 @@ const App = () => {
       title: newBlog.title,
       author: newBlog.author,
       url: newBlog.url,
-      likes: 0
+      likes: 0,
     }
     blogFormRef.current.toggleVisibility()
 
@@ -69,28 +66,28 @@ const App = () => {
       .create(blogObject)
       .then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog))
-        setSuccessMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
+        setSuccessMessage(
+          `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`
+        )
         setTimeout(() => {
           setSuccessMessage(null)
         }, 5000)
       })
-      .catch((error) => {
+      .catch(() => {
         setErrorMessage('invalid title, author or url')
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
       })
-
   }
 
-  const handleLogout = (event) => {
+  const handleLogout = () => {
     window.localStorage.clear()
     setUser(null)
   }
 
   // Function to increment likes for a blog post
   const addLike = (id) => {
-
     const blog = blogs.find((n) => n.id === id)
 
     // Increment likes by 1 to the new object
@@ -99,9 +96,9 @@ const App = () => {
     blogService
       .update(id, changedBlog)
       .then((returnedBlog) => {
-        setBlogs(blogs.map((blog) => (blog.id === id ? returnedBlog : blog )))
+        setBlogs(blogs.map((blog) => (blog.id === id ? returnedBlog : blog)))
       })
-      .catch((error) => {
+      .catch(() => {
         setErrorMessage(
           `Couldn't find '${blog.title}'. The blog post has been removed.`
         )
@@ -122,7 +119,7 @@ const App = () => {
         .then(() => {
           setBlogs(blogs.filter((blog) => blog.id !== id))
         })
-        .catch((error) => {
+        .catch(() => {
           setErrorMessage(
             `Couldn't find '${blog.title}'. The blog post has been removed.`
           )
@@ -149,24 +146,27 @@ const App = () => {
           <h2>blogs</h2>
           <Notification message={errorMessage} />
           <Success message={successMessage} />
-          <p>{user.name} logged in<button onClick={handleLogout}>logout</button></p>
+          <p>
+            {user.name} logged in<button onClick={handleLogout}>logout</button>
+          </p>
 
           <h2>create new blog</h2>
-          <Togglable 
-            buttonLabel="create new blog"
-            ref={blogFormRef}
-          >
-            <BlogForm createBlog={createBlog}/>
+          <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+            <BlogForm createBlog={createBlog} />
           </Togglable>
-          {blogs.sort(function(a, b) {return b.likes - a.likes}).map((blog) => (
-            <Blog 
-              key={blog.id} 
-              blog={blog} 
-              addLike={addLike}
-              removeBlog={removeBlog}
-              user={user}
-            />
-          ))}
+          {blogs
+            .sort(function (a, b) {
+              return b.likes - a.likes
+            })
+            .map((blog) => (
+              <Blog
+                key={blog.id}
+                blog={blog}
+                addLike={addLike}
+                removeBlog={removeBlog}
+                user={user}
+              />
+            ))}
         </div>
       )}
     </div>
@@ -174,4 +174,3 @@ const App = () => {
 }
 
 export default App
-

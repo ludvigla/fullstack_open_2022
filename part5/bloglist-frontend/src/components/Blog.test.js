@@ -4,7 +4,6 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
-// Right, now the test complains about missing
 describe('<Blog />', () => {
 
   test('renders content', () => {

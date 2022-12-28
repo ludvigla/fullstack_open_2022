@@ -39,16 +39,17 @@ export const createAnecdote = (content) => {
 }
 
 const anecdoteReducer = (state = initialState, action) => {
+  const statecopy = [...state]
   switch (action.type) {
     case 'VOTE':
-      return state.map((anecdote) => {
+      return statecopy.map((anecdote) => {
         if (anecdote.id === action.data.id) {
           return { ...anecdote, votes: anecdote.votes + 1 }
         }
         return anecdote
       })
     case 'NEW_ANECDOTE':
-      return [...state, action.data]
+      return [...statecopy, action.data]
     default: return state
   }
 }

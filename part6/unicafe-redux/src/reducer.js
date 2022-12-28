@@ -5,7 +5,6 @@ const initialState = {
 }
 
 const counterReducer = (state = initialState, action) => {
-  console.log(action)
   const copy = { ...state }
   switch (action.type) {
     case 'GOOD':

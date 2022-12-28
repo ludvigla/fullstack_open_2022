@@ -19,6 +19,7 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
+// Solutions to exercise 6.6, step4
 export const addVote = (id) => {
   return {
     type: 'VOTE',

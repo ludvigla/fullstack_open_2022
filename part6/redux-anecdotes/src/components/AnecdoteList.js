@@ -11,8 +11,8 @@ const AnecdoteList = (props) => {
   const [timeoutId, setTimeoutId] = useState(null)
 
   const vote = (id) => {
-    dispatch(addVote(id))
     const curAnecdote = anecdotes.find((a) => a.id === id)
+    dispatch(addVote(id, {...curAnecdote, votes: curAnecdote.votes + 1}))
     dispatch(createNotification(`You voted for '${curAnecdote.content}'`))
     // Maybe not the best solution to mix in useState, 
     // but without it the timers would stack up and the

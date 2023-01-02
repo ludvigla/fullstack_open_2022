@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { addVote } from '../reducers/anecdoteReducer'
-import { createNotification, removeNotification } from '../reducers/notificationReducer'
+import { setNotification, removeNotification } from '../reducers/notificationReducer'
 import { useState } from 'react'
 
 const AnecdoteList = (props) => {
@@ -8,21 +8,10 @@ const AnecdoteList = (props) => {
   const filter = useSelector((state) => state.filter)
   const dispatch = useDispatch()
 
-  const [timeoutId, setTimeoutId] = useState(null)
-
   const vote = (id) => {
     const curAnecdote = anecdotes.find((a) => a.id === id)
     dispatch(addVote(id, {...curAnecdote, votes: curAnecdote.votes + 1}))
-    dispatch(createNotification(`You voted for '${curAnecdote.content}'`))
-    // Maybe not the best solution to mix in useState, 
-    // but without it the timers would stack up and the
-    // notifications would disappear a bit randomly when
-    // voting for multiple anecdotes in a row.
-    clearTimeout(timeoutId)
-    let curTimeoutId = setTimeout(() => {
-      dispatch(removeNotification())
-    }, 5000)
-    setTimeoutId(curTimeoutId)
+    const curTimeoutId = dispatch(setNotification(`You voted for '${curAnecdote.content}'`, 5))
   }
 
   return (

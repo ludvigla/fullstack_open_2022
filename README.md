@@ -268,3 +268,68 @@ See commit c38ca5d
 
 - [x] __5.22: Blog list end to end, step6__ <br/>
 See commit b5bffd3
+
+### Part6
+
+- [x] __6.1: unicafe revisited, step1__ <br/>
+See commit 197a35d
+
+- [x] __6.2: unicafe revisited, step2__ <br/>
+See commit 54e6fb31
+
+- [x] __6.3: anecdotes, step1__ <br/>
+See commit 
+
+- [x] __6.4: anecdotes, step2__ <br/>
+See commit d64956c
+
+- [x] __6.5: anecdotes, step3__ <br/>
+See commit fa41919
+
+- [x] __6.6: anecdotes, step4__ <br/>
+See commit fb5f7e4
+
+- [x] __6.7: anecdotes, step5__ <br/>
+See commit bdccd89
+
+- [x] __6.8: anecdotes, step6__ <br/>
+See commit 4383ad2
+
+- [x] __6.9: Better anecdotes, step7__ <br/>
+See commit daecffb
+
+- [x] __6.10: Better anecdotes, step8__ <br/>
+See commit 3d4a486
+
+- [x] __6.11: Better anecdotes, step9__ <br/>
+See commit ce950d3
+
+- [x] __6.12*: Better anecdotes, step10__ <br/>
+See commit d57e47b
+
+- [x] __6.13: Anecdotes and the backend, step1__ <br/>
+See commit 5dc87fc
+
+- [x] __6.14: Anecdotes and the backend, step2__ <br/>
+See commit 20b8a87
+
+- [x] __6.15: Anecdotes and the backend, step3__ <br/>
+See commit 7cfe6b3
+
+- [x] __6.16: Anecdotes and the backend, step4__ <br/>
+See commit 141e744
+
+- [x] __6.17: Anecdotes and the backend, step5__ <br/>
+See commit b65d98f
+
+- [x] __6.18: Anecdotes and the backend, step6__ <br/>
+See commit 92fbc3c
+
+- [x] __6.19: Anecdotes and connect, step1__ <br/>
+See commit f5c387d
+
+- [x] __6.20: Anecdotes and connect, step2__ <br/>
+See commit df258da
+
+- [x] __6.21: anecdotes, the grand finale__ <br/>
+See commit a13fd20

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { createTimer } from "./timerReducer"
 
 const initialState = null
 
@@ -17,12 +18,17 @@ const notificationSlice = createSlice({
   
 export const { createNotification, removeNotification } = notificationSlice.actions
 
-export const setNotification = (content, seconds) => {
+export const setNotification = (content, seconds, timer) => {
   return async dispatch => {
+    clearTimeout(timer)
     dispatch(createNotification(content))
-    setTimeout(() => {
+    const timerId = setTimeout(() => {
       dispatch(removeNotification())
     }, seconds*1000)
+    // I thought it was easiest to store the timerId in the store
+    // and then clear it in the next dispatch. So I created a timerReducer
+    // and a createTimer action to be able to acccess the timerId in the store.
+    dispatch(createTimer(timerId))
   }
 }
 

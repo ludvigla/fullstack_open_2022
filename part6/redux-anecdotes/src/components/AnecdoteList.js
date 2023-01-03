@@ -7,7 +7,7 @@ const AnecdoteList = (props) => {
   const vote = (id) => {
     const curAnecdote = props.anecdotes.find((a) => a.id === id)
     props.addVote(id, {...curAnecdote, votes: curAnecdote.votes + 1})
-    props.setNotification(`You voted for '${curAnecdote.content}'`, 5)
+    props.setNotification(`You voted for '${curAnecdote.content}'`, 5, props.timer)
   }
 
   return (
@@ -34,6 +34,7 @@ const mapStateToProps = (state) => {
   return {
     anecdotes: state.anecdotes,
     filter: state.filter,
+    timer: state.timer,
   }
 }
 

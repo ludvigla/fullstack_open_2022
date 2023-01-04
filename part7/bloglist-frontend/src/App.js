@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { PropTypes } from 'prop-types'
 import { setNotification } from './reducers/notificationReducer'
-import { connect } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
@@ -9,18 +9,23 @@ import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { initializeBlogs, setBlogs } from './reducers/blogReducer'
 
 const App = (props) => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
+  // State is now managed with Redux
+  const blogs = useSelector((state) => state.blogs)
+
   const blogFormRef = useRef()
 
+  // Blogs are now initialized with Redux
+  const dispatch = useDispatch()
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -52,71 +57,26 @@ const App = (props) => {
     }
   }
 
-  const createBlog = async (newBlog) => {
-    const blogObject = {
-      user: user.id,
-      title: newBlog.title,
-      author: newBlog.author,
-      url: newBlog.url,
-      likes: 0,
-    }
-    blogFormRef.current.toggleVisibility()
-
-    try {
-      const returnedBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(returnedBlog))
-      props.setNotification({
-        class: 'success',
-        content: `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`,
-      })
-    } catch (exception) {
-      props.setNotification({
-        class: 'error',
-        content: 'invalid title, author or url',
-      })
-    }
-  }
-
   const handleLogout = () => {
     window.localStorage.clear()
     setUser(null)
   }
 
-  // Function to increment likes for a blog post
-  const addLike = async (id) => {
-    const blog = blogs.find((n) => n.id === id)
-
-    // Increment likes by 1 to the new object
-    const changedBlog = { ...blog, likes: blog.likes + 1 }
-
-    try {
-      const returnedBlog = await blogService.update(id, changedBlog)
-      setBlogs(blogs.map((blog) => (blog.id === id ? returnedBlog : blog)))
-    } catch (exception) {
-      props.setNotification({
-        class: 'error',
-        content: `Couldn't find '${blog.title}'. The blog post has been removed.`,
-      })
-    }
-  }
-
   // Function to remove blog posts
-  const removeBlog = (id) => {
+  const removeBlog = async (id) => {
     const blog = blogs.find((n) => n.id === id)
 
     // Confirm if user wants to remove the blog post
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      blogService
-        .remove(id)
-        .then(() => {
-          setBlogs(blogs.filter((blog) => blog.id !== id))
+      try {
+        await blogService.remove(id)
+        setBlogs(blogs.filter((blog) => blog.id !== id))
+      } catch (exception) {
+        props.setNotification({
+          class: 'error',
+          content: `Couldn't find '${blog.title}'. The blog post has been removed.`,
         })
-        .catch(() => {
-          props.setNotification({
-            class: 'error',
-            content: `Couldn't find '${blog.title}'. The blog post has been removed.`,
-          })
-        })
+      }
     }
   }
 
@@ -140,9 +100,9 @@ const App = (props) => {
 
           <h2>create new blog</h2>
           <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-            <BlogForm createBlog={createBlog} />
+            <BlogForm user={user} />
           </Togglable>
-          {blogs
+          {[...blogs]
             .sort(function (a, b) {
               return b.likes - a.likes
             })
@@ -150,7 +110,6 @@ const App = (props) => {
               <Blog
                 key={blog.id}
                 blog={blog}
-                addLike={addLike}
                 removeBlog={removeBlog}
                 user={user}
               />

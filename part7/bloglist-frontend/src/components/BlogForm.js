@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { createBlog } from '../reducers/blogReducer'
+import { connect } from 'react-redux'
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = (props) => {
   const [newBlog, setNewBlog] = useState({
+    user: props.user.user,
     title: '',
     author: '',
     url: '',
@@ -18,8 +21,9 @@ const BlogForm = ({ createBlog }) => {
 
   const addBlog = (event) => {
     event.preventDefault()
-    createBlog(newBlog)
+    props.createBlog(newBlog)
     setNewBlog({
+      user: props.user.user,
       title: '',
       author: '',
       url: '',
@@ -68,7 +72,14 @@ const BlogForm = ({ createBlog }) => {
 }
 
 BlogForm.propTypes = {
+  user: PropTypes.object.isRequired,
   createBlog: PropTypes.func.isRequired,
 }
 
-export default BlogForm
+const mapDispatchToProps = {
+  createBlog,
+}
+
+const ConnectedBlogForm = connect(null, mapDispatchToProps)(BlogForm)
+
+export default ConnectedBlogForm

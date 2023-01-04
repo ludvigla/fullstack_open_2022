@@ -2,11 +2,14 @@ import { useState, useEffect, useRef } from 'react'
 import { PropTypes } from 'prop-types'
 import { setNotification } from './reducers/notificationReducer'
 import { connect, useDispatch, useSelector } from 'react-redux'
+import { Routes, Route } from 'react-router-dom'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
+import Menu from './components/Menu'
+import Users from './components/Users'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import { initializeBlogs } from './reducers/blogReducer'
@@ -77,21 +80,31 @@ const App = (props) => {
         <div>
           <h2>blogs</h2>
           <Notification />
+          <Menu />
           <p>
             {user.name} logged in<button onClick={handleLogout}>logout</button>
           </p>
-
-          <h2>create new blog</h2>
-          <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-            <BlogForm user={user} />
-          </Togglable>
-          {[...blogs]
-            .sort(function (a, b) {
-              return b.likes - a.likes
-            })
-            .map((blog) => (
-              <Blog key={blog.id} blog={blog} user={user} />
-            ))}
+          <Routes>
+            <Route
+              path='/'
+              element={
+                <div>
+                  <h2>create new blog</h2>
+                  <Togglable buttonLabel='create new blog' ref={blogFormRef}>
+                    <BlogForm user={user} />
+                  </Togglable>
+                  {[...blogs]
+                    .sort(function (a, b) {
+                      return b.likes - a.likes
+                    })
+                    .map((blog) => (
+                      <Blog key={blog.id} blog={blog} user={user} />
+                    ))}
+                </div>
+              }
+            />
+            <Route path='/users' element={<Users />} />
+          </Routes>
         </div>
       )}
     </div>

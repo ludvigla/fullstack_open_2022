@@ -24,3 +24,5 @@ sketch
 part3/part3-notes-backend/.env
 part4/notes-backend/.env
 part4/blog-list-app/.env
+part7/bloglist-backend/.env
+part7/bloglist-frontend/.vscode/

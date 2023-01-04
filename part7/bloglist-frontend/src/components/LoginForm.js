@@ -7,12 +7,11 @@ const LoginForm = ({
   handleSubmit,
   handleUsernameChange,
   handlePasswordChange,
-  errorMessage,
 }) => {
   return (
     <div>
       <h2>Login</h2>
-      <Notification message={errorMessage} />
+      <Notification />
 
       <form onSubmit={handleSubmit} id='login-form'>
         <div>

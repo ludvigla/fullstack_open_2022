@@ -1,17 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
+import { PropTypes } from 'prop-types'
+import { setNotification } from './reducers/notificationReducer'
+import { connect } from 'react-redux'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
-import Success from './components/Success'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
-const App = () => {
+const App = (props) => {
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [successMessage, setSuccessMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -45,14 +45,14 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong user name or password')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      props.setNotification({
+        class: 'error',
+        content: 'Wrong user name or password',
+      })
     }
   }
 
-  const createBlog = (newBlog) => {
+  const createBlog = async (newBlog) => {
     const blogObject = {
       user: user.id,
       title: newBlog.title,
@@ -62,23 +62,19 @@ const App = () => {
     }
     blogFormRef.current.toggleVisibility()
 
-    blogService
-      .create(blogObject)
-      .then((returnedBlog) => {
-        setBlogs(blogs.concat(returnedBlog))
-        setSuccessMessage(
-          `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`
-        )
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 5000)
+    try {
+      const returnedBlog = await blogService.create(blogObject)
+      setBlogs(blogs.concat(returnedBlog))
+      props.setNotification({
+        class: 'success',
+        content: `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`,
       })
-      .catch(() => {
-        setErrorMessage('invalid title, author or url')
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
+    } catch (exception) {
+      props.setNotification({
+        class: 'error',
+        content: 'invalid title, author or url',
       })
+    }
   }
 
   const handleLogout = () => {
@@ -87,25 +83,21 @@ const App = () => {
   }
 
   // Function to increment likes for a blog post
-  const addLike = (id) => {
+  const addLike = async (id) => {
     const blog = blogs.find((n) => n.id === id)
 
     // Increment likes by 1 to the new object
     const changedBlog = { ...blog, likes: blog.likes + 1 }
 
-    blogService
-      .update(id, changedBlog)
-      .then((returnedBlog) => {
-        setBlogs(blogs.map((blog) => (blog.id === id ? returnedBlog : blog)))
+    try {
+      const returnedBlog = await blogService.update(id, changedBlog)
+      setBlogs(blogs.map((blog) => (blog.id === id ? returnedBlog : blog)))
+    } catch (exception) {
+      props.setNotification({
+        class: 'error',
+        content: `Couldn't find '${blog.title}'. The blog post has been removed.`,
       })
-      .catch(() => {
-        setErrorMessage(
-          `Couldn't find '${blog.title}'. The blog post has been removed.`
-        )
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-      })
+    }
   }
 
   // Function to remove blog posts
@@ -120,12 +112,10 @@ const App = () => {
           setBlogs(blogs.filter((blog) => blog.id !== id))
         })
         .catch(() => {
-          setErrorMessage(
-            `Couldn't find '${blog.title}'. The blog post has been removed.`
-          )
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
+          props.setNotification({
+            class: 'error',
+            content: `Couldn't find '${blog.title}'. The blog post has been removed.`,
+          })
         })
     }
   }
@@ -139,13 +129,11 @@ const App = () => {
           handleSubmit={handleLogin}
           handleUsernameChange={({ target }) => setUsername(target.value)}
           handlePasswordChange={({ target }) => setPassword(target.value)}
-          errorMessage={errorMessage}
         />
       ) : (
         <div>
           <h2>blogs</h2>
-          <Notification message={errorMessage} />
-          <Success message={successMessage} />
+          <Notification />
           <p>
             {user.name} logged in<button onClick={handleLogout}>logout</button>
           </p>
@@ -173,4 +161,14 @@ const App = () => {
   )
 }
 
-export default App
+App.propTypes = {
+  setNotification: PropTypes.func.isRequired,
+}
+
+const mapDispatchToProps = {
+  setNotification,
+}
+
+const ConnectedApp = connect(null, mapDispatchToProps)(App)
+
+export default ConnectedApp

@@ -61,7 +61,6 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
   )
 }
 
-// 5.11: Blog list frontend, step11
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   addLike: PropTypes.func.isRequired,

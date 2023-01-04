@@ -1,9 +1,9 @@
 const Success = ({ message }) => {
   if (message === null) {
-    return null
+    return null;
   }
 
-  return <div className="success">{message}</div>
-}
+  return <div className="success">{message}</div>;
+};
 
-export default Success
+export default Success;

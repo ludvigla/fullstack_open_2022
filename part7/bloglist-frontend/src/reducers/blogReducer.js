@@ -33,7 +33,6 @@ export const createBlog = (newBlog) => {
   return async (dispatch) => {
     try {
       const returnedBlog = await blogService.create(newBlog)
-      console.log('returnedBlog', returnedBlog)
       setNotification({
         class: 'success',
         content: `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`,

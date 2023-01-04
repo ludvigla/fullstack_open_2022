@@ -65,4 +65,23 @@ export const addLike = (id, blogs) => {
   }
 }
 
+export const removeBlog = (id, blogs) => {
+  return async (dispatch) => {
+    const blog = blogs.find((n) => n.id === id)
+
+    // Confirm if user wants to remove the blog post
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      try {
+        await blogService.remove(id)
+        dispatch(setBlogs(blogs.filter((blog) => blog.id !== id)))
+      } catch (exception) {
+        setNotification({
+          class: 'error',
+          content: `Couldn't find '${blog.title}'. The blog post has been removed.`,
+        })
+      }
+    }
+  }
+}
+
 export default blogsSlice.reducer

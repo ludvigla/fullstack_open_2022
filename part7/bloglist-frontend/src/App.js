@@ -9,7 +9,7 @@ import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import { initializeBlogs, setBlogs } from './reducers/blogReducer'
+import { initializeBlogs } from './reducers/blogReducer'
 
 const App = (props) => {
   const [username, setUsername] = useState('')
@@ -63,7 +63,7 @@ const App = (props) => {
   }
 
   // Function to remove blog posts
-  const removeBlog = async (id) => {
+  /* const removeBlog = async (id) => {
     const blog = blogs.find((n) => n.id === id)
 
     // Confirm if user wants to remove the blog post
@@ -78,7 +78,7 @@ const App = (props) => {
         })
       }
     }
-  }
+  } */
 
   return (
     <div>
@@ -107,12 +107,7 @@ const App = (props) => {
               return b.likes - a.likes
             })
             .map((blog) => (
-              <Blog
-                key={blog.id}
-                blog={blog}
-                removeBlog={removeBlog}
-                user={user}
-              />
+              <Blog key={blog.id} blog={blog} user={user} />
             ))}
         </div>
       )}

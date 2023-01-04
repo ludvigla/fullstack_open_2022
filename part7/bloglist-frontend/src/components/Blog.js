@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
-import { addLike } from '../reducers/blogReducer'
+import { addLike, removeBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, removeBlog, user }) => {
+const Blog = ({ blog, user }) => {
   const [visibleinfo, setVisibleInfo] = useState(false)
 
   const blogs = useSelector((state) => state.blogs)
@@ -26,7 +26,7 @@ const Blog = ({ blog, removeBlog, user }) => {
   }
 
   const handleRemove = () => {
-    removeBlog(blog.id)
+    dispatch(removeBlog(blog.id, blogs))
   }
 
   return (
@@ -68,7 +68,6 @@ const Blog = ({ blog, removeBlog, user }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  removeBlog: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
 }
 

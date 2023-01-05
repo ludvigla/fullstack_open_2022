@@ -4,6 +4,7 @@ import { setNotification } from './reducers/notificationReducer'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
 import Blog from './components/Blog'
+import SingleBlog from './components/SingleBlog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
@@ -82,9 +83,8 @@ const App = (props) => {
           <h2>blogs</h2>
           <Notification />
           <Menu />
-          <p>
-            {user.name} logged in<button onClick={handleLogout}>logout</button>
-          </p>
+          <p>{user.name} logged in</p>
+          <button onClick={handleLogout}>logout</button>
           <Routes>
             <Route
               path='/'
@@ -106,6 +106,7 @@ const App = (props) => {
             />
             <Route path='/users' element={<Users />} />
             <Route path='/users/:id' element={<User />} />
+            <Route path='/blogs/:id' element={<SingleBlog />} />
           </Routes>
         </div>
       )}

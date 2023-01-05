@@ -12,7 +12,7 @@ Content-Type: application/json
 
 {
     "name": "Super User",
-    "username": "root",
+    "username": "superuser",
     "password": "secret"
 }
 
@@ -21,10 +21,11 @@ post http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-    "name": "Jim Jeff",
-    "username": "jimjeff",
-    "password": "12345678"
+    "name": "Abra Kadabdra",
+    "username": "abkad",
+    "password": "12345"
 }
+
 
 ###
 post http://localhost:3003/api/login
@@ -36,13 +37,43 @@ Content-Type: application/json
 }
 
 ###
-post http://localhost:3003/api/blogs
+post http://localhost:3003/api/login
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impkb2UiLCJpZCI6IjYzOGE4NDQ2NTRhOGIyNGU0MGJhOTBlYyIsImlhdCI6MTY3MDAyMjIyNX0.UIcgt1ZDNJGgPIAAeMSpH13UwW0ewymbFmjg8uygUqk
 
 {
-  "title": "My latest blog post",
+  "username": "superuser",
+  "password": "secret"
+}
+
+###
+post http://localhost:3003/api/blogs/63b6be2ec3b201a31f7c9655/comments
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1cGVydXNlciIsIm5hbWUiOiJTdXBlciBVc2VyIiwiaWQiOiI2M2I1YWEzNmNjMDc1N2ZhZTZiMzk5YzciLCJpYXQiOjE2NzI5MjA2MzJ9.jdxjJPk8rCZBUUgmCiBY5XlkfrqKbQBi95v_tUSkdzQ
+
+{
+  "title": "Super Users blog post",
+  "author": "Super User",
+  "url": "www.test.com/hubba",
+  "likes": 7,
+  "comments": [
+    "This is a comment",
+    "This is another comment"
+  ]
+}
+
+###
+post http://localhost:3003/api/blogs/63b6bf1bc3b201a31f7c9673/comments
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1cGVydXNlciIsIm5hbWUiOiJTdXBlciBVc2VyIiwiaWQiOiI2M2I1YWEzNmNjMDc1N2ZhZTZiMzk5YzciLCJpYXQiOjE2NzI5MjA2MzJ9.jdxjJPk8rCZBUUgmCiBY5XlkfrqKbQBi95v_tUSkdzQ
+
+{
+  "title": "An awesome blog post",
   "author": "John Doe",
-  "url": "https://blogposts.com/my-latest-blog-post",
-  "likes": 11
+  "url": "www.test.com/1",
+  "likes": 0,
+  "comments": [
+    "Such wow",
+    "Awesome post",
+    "I like this"
+  ]
 }

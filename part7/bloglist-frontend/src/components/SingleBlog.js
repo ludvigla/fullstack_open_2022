@@ -5,7 +5,7 @@ import { addLike } from '../reducers/blogReducer'
 const SingleBlog = () => {
   // Obtain blogs state and match with selected id
   const blogs = useSelector((state) => state.blogs)
-  // const user = useSelector((state) => state.user)
+  //const user = useSelector((state) => state.user)
   const dispatch = useDispatch()
 
   // Return null if navigation to /blogs/:id happens before users have been fetched
@@ -28,9 +28,9 @@ const SingleBlog = () => {
 
   /* const handleRemove = () => {
     dispatch(removeBlog(blog.id, blogs))
-  }
+  } */
 
-  const blogUserId = blog.user.id ? blog.user.id : blog.user */
+  //const blogUserId = blog.user.id ? blog.user.id : blog.user
 
   return (
     <>
@@ -60,6 +60,12 @@ const SingleBlog = () => {
               </button>
             </div>
           ) : null} */}
+          <h3>comments</h3>
+          <ul>
+            {blog.comments.map((comment, index) => (
+              <li key={index}>{comment}</li>
+            ))}
+          </ul>
         </div>
       )}
     </>

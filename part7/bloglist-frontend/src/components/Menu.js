@@ -7,7 +7,7 @@ const Menu = () => {
   return (
     <div>
       <Link style={padding} to='/'>
-        home
+        blogs
       </Link>
       <Link style={padding} to='/users'>
         users

@@ -80,7 +80,7 @@ const App = (props) => {
         />
       ) : (
         <div>
-          <h2>blogs</h2>
+          <h2>blog app</h2>
           <Notification />
           <Menu />
           <p>{user.name} logged in</p>

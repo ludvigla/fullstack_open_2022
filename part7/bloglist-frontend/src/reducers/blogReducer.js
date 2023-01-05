@@ -47,8 +47,9 @@ export const createBlog = (newBlog) => {
   }
 }
 
-export const addLike = (id, blogs) => {
+export const addLike = (id) => {
   return async (dispatch) => {
+    const blogs = await blogService.getAll()
     const blog = blogs.find((n) => n.id === id)
     const updatedBlog = { ...blog, likes: blog.likes + 1 }
 
@@ -79,6 +80,25 @@ export const removeBlog = (id, blogs) => {
           content: `Couldn't find '${blog.title}'. The blog post has been removed.`,
         })
       }
+    }
+  }
+}
+
+export const addCommentToBlogPost = (id, comment) => {
+  return async (dispatch) => {
+    const blogs = await blogService.getAll()
+    const blog = blogs.find((n) => n.id === id)
+    const comments = blog.comments.concat(comment)
+    const updatedBlog = { ...blog, comments: comments }
+
+    try {
+      await blogService.addComment(id, updatedBlog)
+      dispatch(updateBlog(updatedBlog))
+    } catch (exception) {
+      setNotification({
+        class: 'error',
+        content: `Couldn't find '${blog.title}'. The blog post has been removed.`,
+      })
     }
   }
 }

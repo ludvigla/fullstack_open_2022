@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useMatch } from 'react-router-dom'
-import { addLike } from '../reducers/blogReducer'
+import { addLike, addCommentToBlogPost } from '../reducers/blogReducer'
 
 const SingleBlog = () => {
   // Obtain blogs state and match with selected id
@@ -23,7 +23,7 @@ const SingleBlog = () => {
   const pStyle = { margin: '0px' }
 
   const handleLikeChange = () => {
-    dispatch(addLike(blog.id, blogs))
+    dispatch(addLike(blog.id))
   }
 
   /* const handleRemove = () => {
@@ -31,6 +31,13 @@ const SingleBlog = () => {
   } */
 
   //const blogUserId = blog.user.id ? blog.user.id : blog.user
+
+  const handleCommentSubmit = (event) => {
+    event.preventDefault()
+    const comment = event.target.comment.value
+    event.target.comment.value = ''
+    dispatch(addCommentToBlogPost(blog.id, comment))
+  }
 
   return (
     <>
@@ -61,6 +68,10 @@ const SingleBlog = () => {
             </div>
           ) : null} */}
           <h3>comments</h3>
+          <form onSubmit={handleCommentSubmit}>
+            <input type='text' name='comment' />
+            <button type='submit'>add comment</button>
+          </form>
           <ul>
             {blog.comments.map((comment, index) => (
               <li key={index}>{comment}</li>

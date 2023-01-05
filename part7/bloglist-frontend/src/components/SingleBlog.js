@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useMatch } from 'react-router-dom'
 import { addLike, addCommentToBlogPost } from '../reducers/blogReducer'
+import { Button, TextField } from '@mui/material'
 
 const SingleBlog = () => {
   // Obtain blogs state and match with selected id
@@ -51,13 +52,14 @@ const SingleBlog = () => {
           <a href={blog.url}>{blog.url}</a>
           <p style={pStyle}>
             {blog.likes} likes{' '}
-            <button
-              id='like-button'
-              className='likebutton'
+            <Button
+              label='like'
+              size='small'
+              color='primary'
               onClick={handleLikeChange}
             >
               like
-            </button>
+            </Button>
           </p>
           <p style={pStyle}>added by {blog.user.name}</p>
           {/* {user.user === blogUserId ? (
@@ -69,8 +71,10 @@ const SingleBlog = () => {
           ) : null} */}
           <h3>comments</h3>
           <form onSubmit={handleCommentSubmit}>
-            <input type='text' name='comment' />
-            <button type='submit'>add comment</button>
+            <TextField type='text' name='comment' size='small' />
+            <Button type='submit' color='primary'>
+              add comment
+            </Button>
           </form>
           <ul>
             {blog.comments.map((comment, index) => (

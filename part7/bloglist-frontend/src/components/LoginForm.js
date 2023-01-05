@@ -1,51 +1,81 @@
 import Notification from './Notification'
-import PropTypes from 'prop-types'
+import { TextField, Button } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
+import { setUser } from '../reducers/userReducer'
+import { setNotification } from '../reducers/notificationReducer'
+import { setUsername } from '../reducers/usernameReducer'
+import { setPassword } from '../reducers/passwordReducer'
+import loginService from '../services/login'
+import blogService from '../services/blogs'
 
-const LoginForm = ({
-  username,
-  password,
-  handleSubmit,
-  handleUsernameChange,
-  handlePasswordChange,
-}) => {
+const LoginForm = () => {
+  const username = useSelector((state) => state.username)
+  const password = useSelector((state) => state.password)
+
+  const dispatch = useDispatch()
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      })
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      blogService.setToken(user.token)
+      dispatch(setUser(user))
+      dispatch(setUsername(''))
+      dispatch(setPassword(''))
+      dispatch(
+        setNotification({
+          class: 'success',
+          content: `Welcome back, ${user.name}!`,
+        })
+      )
+    } catch (exception) {
+      dispatch(
+        setNotification({
+          class: 'error',
+          content: 'Wrong user name or password',
+        })
+      )
+    }
+  }
+
   return (
     <div>
       <h2>Login</h2>
       <Notification />
 
-      <form onSubmit={handleSubmit} id='login-form'>
+      <form onSubmit={handleLogin} id='login-form'>
         <div>
-          username
-          <input
-            id='username'
+          <TextField
+            label='username'
             type='text'
             value={username}
-            onChange={handleUsernameChange}
+            onChange={({ target }) => dispatch(setUsername(target.value))}
           />
         </div>
         <div>
-          password
-          <input
-            id='password'
+          <TextField
+            label='password'
             type='password'
             value={password}
-            onChange={handlePasswordChange}
+            onChange={({ target }) => dispatch(setPassword(target.value))}
           />
         </div>
-        <button id='login-button' type='submit'>
+        <Button
+          id='login-button'
+          variant='contained'
+          color='primary'
+          type='submit'
+        >
           login
-        </button>
+        </Button>
       </form>
     </div>
   )
-}
-
-LoginForm.propTypes = {
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  handleUsernameChange: PropTypes.func.isRequired,
-  handlePasswordChange: PropTypes.func.isRequired,
 }
 
 export default LoginForm

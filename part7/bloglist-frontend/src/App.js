@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { PropTypes } from 'prop-types'
 import { setNotification } from './reducers/notificationReducer'
 import { connect, useDispatch, useSelector } from 'react-redux'
-import { Routes, Route } from 'react-router-dom'
-import Blog from './components/Blog'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { Container } from '@mui/material'
+import Home from './components/Home'
+import Blogs from './components/Blogs'
 import SingleBlog from './components/SingleBlog'
-import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
@@ -13,14 +14,10 @@ import Menu from './components/Menu'
 import Users from './components/Users'
 import User from './components/User'
 import blogService from './services/blogs'
-import loginService from './services/login'
 import { initializeBlogs } from './reducers/blogReducer'
 import { setUser } from './reducers/userReducer'
 
-const App = (props) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-
+const App = () => {
   // State is now managed with Redux
   const blogs = useSelector((state) => state.blogs)
   const user = useSelector((state) => state.user)
@@ -42,65 +39,35 @@ const App = (props) => {
     }
   }, [])
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      dispatch(setUser(user))
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      props.setNotification({
-        class: 'error',
-        content: 'Wrong user name or password',
-      })
-    }
-  }
-
-  const handleLogout = () => {
-    window.localStorage.clear()
-    dispatch(setUser(null))
-  }
-
   return (
     <div>
-      {user === null ? (
-        <LoginForm
-          username={username}
-          password={password}
-          handleSubmit={handleLogin}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-        />
-      ) : (
+      <Container>
         <div>
-          <h2>blog app</h2>
-          <Notification />
           <Menu />
-          <p>{user.name} logged in</p>
-          <button onClick={handleLogout}>logout</button>
           <Routes>
+            <Route path='/' element={<Home />} />
             <Route
-              path='/'
+              path='/login'
+              element={
+                user === null ? <LoginForm /> : <Navigate replace to='/' />
+              }
+            />
+            <Route
+              path='/blogs'
               element={
                 <div>
-                  <h2>create new blog</h2>
-                  <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-                    <BlogForm user={user} />
-                  </Togglable>
-                  {[...blogs]
-                    .sort(function (a, b) {
-                      return b.likes - a.likes
-                    })
-                    .map((blog) => (
-                      <Blog key={blog.id} blog={blog} user={user} />
-                    ))}
+                  {user ? (
+                    <div>
+                      <h2>create a new blog post</h2>
+                      <Togglable
+                        buttonLabel='create new blog'
+                        ref={blogFormRef}
+                      >
+                        <BlogForm user={user} />
+                      </Togglable>
+                    </div>
+                  ) : null}
+                  <Blogs blogs={blogs} />
                 </div>
               }
             />
@@ -109,7 +76,7 @@ const App = (props) => {
             <Route path='/blogs/:id' element={<SingleBlog />} />
           </Routes>
         </div>
-      )}
+      </Container>
     </div>
   )
 }

@@ -2,10 +2,11 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { createBlog } from '../reducers/blogReducer'
 import { connect } from 'react-redux'
+import { TextField, Button } from '@mui/material'
 
 const BlogForm = (props) => {
   const [newBlog, setNewBlog] = useState({
-    user: props.user.user,
+    user: props.user.name,
     title: '',
     author: '',
     url: '',
@@ -23,7 +24,7 @@ const BlogForm = (props) => {
     event.preventDefault()
     props.createBlog(newBlog)
     setNewBlog({
-      user: props.user.user,
+      user: props.user.name,
       title: '',
       author: '',
       url: '',
@@ -34,38 +35,37 @@ const BlogForm = (props) => {
     <>
       <form onSubmit={addBlog}>
         <div>
-          <label htmlFor='title-input'>title:</label>
-          <input
-            id='title-input'
-            type='text'
+          <TextField
+            label='title'
             name='title'
             value={newBlog.title}
             onChange={handleBlogChange}
           />
         </div>
         <div>
-          <label htmlFor='author-input'>author:</label>
-          <input
-            id='author-input'
-            type='text'
+          <TextField
+            label='author'
             name='author'
             value={newBlog.author}
             onChange={handleBlogChange}
           />
         </div>
         <div>
-          <label htmlFor='url-input'>url:</label>
-          <input
-            id='url-input'
-            type='text'
+          <TextField
+            label='url'
             name='url'
             value={newBlog.url}
             onChange={handleBlogChange}
           />
         </div>
-        <button id='submit-post' type='submit'>
+        <Button
+          id='create-blog-button'
+          variant='contained'
+          color='primary'
+          type='submit'
+        >
           create
-        </button>
+        </Button>
       </form>
     </>
   )

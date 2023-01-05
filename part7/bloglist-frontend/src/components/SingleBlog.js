@@ -6,7 +6,7 @@ import { Button, TextField } from '@mui/material'
 const SingleBlog = () => {
   // Obtain blogs state and match with selected id
   const blogs = useSelector((state) => state.blogs)
-  //const user = useSelector((state) => state.user)
+
   const dispatch = useDispatch()
 
   // Return null if navigation to /blogs/:id happens before users have been fetched
@@ -26,12 +26,6 @@ const SingleBlog = () => {
   const handleLikeChange = () => {
     dispatch(addLike(blog.id))
   }
-
-  /* const handleRemove = () => {
-    dispatch(removeBlog(blog.id, blogs))
-  } */
-
-  //const blogUserId = blog.user.id ? blog.user.id : blog.user
 
   const handleCommentSubmit = (event) => {
     event.preventDefault()
@@ -61,14 +55,6 @@ const SingleBlog = () => {
               like
             </Button>
           </p>
-          <p style={pStyle}>added by {blog.user.name}</p>
-          {/* {user.user === blogUserId ? (
-            <div>
-              <button id='remove-button' onClick={handleRemove}>
-                remove
-              </button>
-            </div>
-          ) : null} */}
           <h3>comments</h3>
           <form onSubmit={handleCommentSubmit}>
             <TextField type='text' name='comment' size='small' />

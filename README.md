@@ -333,3 +333,71 @@ See commit df258da
 
 - [x] __6.21: anecdotes, the grand finale__ <br/>
 See commit a13fd20
+
+
+### Part7
+
+- [x] __7.1: routed anecdotes, step1__ <br/>
+See commit 4063b60
+
+- [x] __7.2: routed anecdotes, step2__ <br/>
+See commit a7869a9
+
+- [x] __7.3: routed anecdotes, step3__ <br/>
+See commit 396dae5
+
+- [x] __7.4: anecdotes and hooks, step1__ <br/>
+See commit 335fded
+
+- [x] __7.5: anecdotes and hooks, step2__ <br/>
+See commit f6faae7
+
+- [x] __7.6: anecdotes and hooks, step3__ <br/>
+See commit 01bd94e
+
+- [x] __7.7: country hook__ <br/>
+See commit 9482dbc
+
+- [x] __7.8: ultimate hooks__ <br/>
+See commit 9ace9ed
+
+- [x] __7.9: automatic code formatting__ <br/>
+See commit f1c5883
+
+- [x] __7.10: redux, step1__ <br/>
+See commit 0e4052e
+
+- [x] __7.11: redux, step2__ <br/>
+See commit a3e305c
+
+- [x] __7.12: redux, step3__ <br/>
+See commit ab80551
+
+- [x] __7.13: redux, step4__ <br/>
+See commit 04bc5d7
+
+- [x] __7.14: user view__ <br/>
+See commit 45e42d2
+
+- [x] __7.15: Individual user view__ <br/>
+See commit 5f3cd76
+
+- [x] __7.16: Blog view__ <br/>
+See commit 50d5e9e
+
+- [x] __7.17: Navigation__ <br/>
+See commit bc24da8
+
+- [x] __7.18: comments, step1__ <br/>
+See commit 9dcf6b0
+
+- [x] __7.19: comments, step2__ <br/>
+See commit b8a8e0b
+Misspelled exercise name in commit message
+
+- [x] __7.20: styles, step1__ <br/>
+See commit 3c5e41f
+
+- [x] __7.21: styles, step2__ <br/>
+See commit cc778cb
+Misspelled exercise name in commit message
